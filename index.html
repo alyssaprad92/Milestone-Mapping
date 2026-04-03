@@ -9,26 +9,14 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* SIMPL Brand Colors */
-      --teal:         #6ABBCC;
-      --queen-blue:   #4C6085;
-      --black-olive:  #32322C;
-      --snow:         #F9F4F5;
-      --grey:         #8E8D92;
-      --light-teal:   #EAF5F8;
-      --light-grey:   #C8D0D8;
-      --white:        #FFFFFF;
-
-      /* Score colors */
-      --c-lt1: #7f8c8d;
-      --c-1:   #c0392b;
-      --c-15:  #e06c1a;
-      --c-2:   #e8a010;
-      --c-25:  #c9b800;
-      --c-3:   #6aab25;
-      --c-35:  #3d9e3d;
-      --c-4:   #1e8a4a;
-      --c-5:   #0a6e36;
+      --teal:        #6ABBCC;
+      --queen-blue:  #4C6085;
+      --black-olive: #32322C;
+      --snow:        #F9F4F5;
+      --grey:        #8E8D92;
+      --light-teal:  #EAF5F8;
+      --light-grey:  #C8D0D8;
+      --white:       #FFFFFF;
     }
 
     body {
@@ -38,7 +26,7 @@
       min-height: 100vh;
     }
 
-    /* ── HEADER ── */
+    /* HEADER */
     header {
       background: var(--white);
       border-bottom: 3px solid var(--teal);
@@ -48,93 +36,52 @@
       justify-content: space-between;
       min-height: 72px;
     }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-    /* Logo placeholder — replaced once PNG is embedded */
-    .simpl-logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .simpl-logo-wrap img {
-      height: 44px;
-      width: auto;
-      display: block;
-    }
-    /* Text fallback shown only if image fails */
+    .header-left { display: flex; align-items: center; gap: 18px; }
     .simpl-wordmark {
       font-family: Arial, sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: 4px;
-      color: var(--queen-blue);
+      font-size: 1.6rem; font-weight: 700;
+      letter-spacing: 4px; color: var(--queen-blue);
       text-transform: uppercase;
     }
-    .header-divider {
-      width: 1px;
-      height: 36px;
-      background: var(--light-grey);
-    }
-    .header-title-wrap h1 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--queen-blue);
-      letter-spacing: .01em;
-    }
-    .header-title-wrap p {
-      font-size: .78rem;
-      color: var(--grey);
-      margin-top: 2px;
-    }
+    .simpl-logo-wrap img { height: 44px; width: auto; display: block; }
+    .header-divider { width: 1px; height: 36px; background: var(--light-grey); }
+    .header-title-wrap h1 { font-size: 1rem; font-weight: 600; color: var(--queen-blue); }
+    .header-title-wrap p  { font-size: .78rem; color: var(--grey); margin-top: 2px; }
 
-    /* ── TABS ── */
+    /* TABS */
     .tab-bar {
       background: var(--queen-blue);
-      display: flex;
-      padding: 0 32px;
-      gap: 4px;
+      display: flex; padding: 0 32px; gap: 4px;
     }
     .tab-btn {
       padding: 12px 22px;
-      font-family: "Roboto", sans-serif;
-      font-size: .88rem; font-weight: 600;
+      font-family: "Roboto", sans-serif; font-size: .88rem; font-weight: 600;
       color: rgba(255,255,255,.6);
       cursor: pointer; border: none; background: transparent;
-      border-bottom: 3px solid transparent;
-      transition: all .15s;
+      border-bottom: 3px solid transparent; transition: all .15s;
     }
     .tab-btn:hover { color: rgba(255,255,255,.9); }
     .tab-btn.active { color: #fff; border-bottom-color: var(--teal); }
 
-    /* ── MAIN ── */
-    main {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 28px 20px 60px;
-    }
+    /* MAIN */
+    main { max-width: 1150px; margin: 0 auto; padding: 28px 20px 60px; }
     .tab-panel { display: none; flex-direction: column; gap: 24px; }
     .tab-panel.active { display: flex; }
 
-    /* ── CARD ── */
+    /* CARD */
     .card {
-      background: var(--white);
-      border: 1px solid var(--light-grey);
-      border-radius: 8px;
-      padding: 24px 28px;
+      background: var(--white); border: 1px solid var(--light-grey);
+      border-radius: 8px; padding: 24px 28px;
       box-shadow: 0 1px 4px rgba(50,50,44,.07);
     }
     .card-title {
-      font-family: Arial, sans-serif;
-      font-size: .68rem; font-weight: 700;
+      font-family: Arial, sans-serif; font-size: .68rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: .12em;
-      color: var(--teal);
-      margin-bottom: 14px;
+      color: var(--teal); margin-bottom: 14px;
     }
+    .teal-rule { height: 2px; background: var(--teal); border: none; margin: 0 0 16px; }
 
-    /* ── STEP BADGE ── */
+    /* STEP */
     .step-label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .step-badge {
       width: 26px; height: 26px; border-radius: 50%;
@@ -144,7 +91,7 @@
     }
     .step-label span { font-weight: 600; color: var(--black-olive); }
 
-    /* ── SELECT ── */
+    /* SELECT */
     select {
       width: 100%; padding: 10px 14px;
       border: 1.5px solid var(--light-grey); border-radius: 6px;
@@ -157,10 +104,9 @@
     }
     select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(106,187,204,.2); }
 
-    /* ── RATING PILLS ── */
+    /* RATING PILLS */
     .rating-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(175px,1fr));
       gap: 10px; margin-top: 6px;
     }
     .rating-pill {
@@ -170,197 +116,184 @@
       background: var(--snow); text-align: center; user-select: none;
     }
     .rating-pill:hover { border-color: var(--teal); color: var(--queen-blue); background: var(--light-teal); }
-    .rating-pill.selected {
-      border-color: var(--teal); background: var(--teal);
-      color: #fff; font-weight: 600;
-    }
+    .rating-pill.selected { border-color: var(--teal); background: var(--teal); color: #fff; font-weight: 600; }
     .rating-pill .emoji { display: block; font-size: 1.4rem; margin-bottom: 4px; }
 
-    /* ── MILESTONE RESULT CARDS ── */
-    .milestone-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-    }
-    .milestone-card {
-      border-radius: 6px; padding: 16px 10px;
-      text-align: center; border: 1.5px solid transparent;
-    }
-    .milestone-card .ms-name {
-      font-family: Arial, sans-serif;
-      font-size: .7rem; font-weight: 700; letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: 6px; color: rgba(255,255,255,.9);
-    }
+    /* MILESTONE CARDS */
+    .milestone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 12px; }
+    .milestone-card { border-radius: 6px; padding: 16px 10px; text-align: center; border: 1.5px solid transparent; }
+    .milestone-card .ms-name { font-family: Arial, sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; color: rgba(255,255,255,.9); }
     .milestone-card .ms-score { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; }
     .milestone-card .ms-label { font-size: .68rem; color: rgba(255,255,255,.8); margin-top: 4px; }
 
-    /* ── HEAT MAP ── */
+    /* HEAT MAP */
     .heatmap-wrap { overflow-x: auto; }
     table.heatmap { border-collapse: collapse; width: 100%; font-size: .82rem; min-width: 500px; }
-    table.heatmap th {
-      background: var(--queen-blue); color: #fff;
-      padding: 9px 12px; text-align: center; white-space: nowrap; font-weight: 600;
-    }
+    table.heatmap th { background: var(--queen-blue); color: #fff; padding: 9px 12px; text-align: center; white-space: nowrap; font-weight: 600; }
     table.heatmap th.row-header { text-align: left; min-width: 220px; }
     table.heatmap tr.active-row td { outline: 3px solid var(--teal); outline-offset: -2px; }
-    table.heatmap td {
-      padding: 9px 12px; border: 1px solid var(--light-grey);
-      text-align: center; font-weight: 700; color: #fff; transition: opacity .1s;
-    }
-    table.heatmap td.row-label {
-      background: var(--light-teal); color: var(--black-olive);
-      font-weight: 500; text-align: left; font-size: .8rem; border-left: none;
-    }
+    table.heatmap td { padding: 9px 12px; border: 1px solid var(--light-grey); text-align: center; font-weight: 700; color: #fff; transition: opacity .1s; }
+    table.heatmap td.row-label { background: var(--light-teal); color: var(--black-olive); font-weight: 500; text-align: left; font-size: .8rem; border-left: none; }
     table.heatmap tr:nth-child(even) td.row-label { background: var(--white); }
     table.heatmap td.empty { background: #eef0f3; color: #aab; font-weight: 400; font-size: .75rem; }
     table.heatmap tr:hover td { opacity: .88; }
     table.heatmap tr.active-row td { opacity: 1 !important; }
 
-    /* ── LEGEND ── */
+    /* LEGEND */
     .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; align-items: center; }
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: .75rem; color: var(--grey); }
     .legend-swatch { width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0; }
 
-    /* ── PLACEHOLDER ── */
+    /* PLACEHOLDER */
     .placeholder { text-align: center; padding: 32px; color: var(--grey); font-size: .9rem; }
     .placeholder .icon { font-size: 2.5rem; margin-bottom: 8px; }
 
-    /* ── TEAL RULE (decorative section divider) ── */
-    .teal-rule {
-      height: 2px; background: var(--teal);
-      border: none; margin: 0 0 16px;
+    /* BUTTONS */
+    .btn {
+      padding: 9px 18px; border-radius: 6px; border: none;
+      font-family: "Roboto", sans-serif; font-size: .88rem; font-weight: 600;
+      cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
     }
+    .btn-primary   { background: var(--teal); color: #fff; }
+    .btn-primary:hover { background: #58a8b9; }
+    .btn-secondary { background: var(--light-teal); color: var(--queen-blue); border: 1px solid var(--light-grey); }
+    .btn-secondary:hover { background: #d4edf2; }
+    .btn-success   { background: #1e8a4a; color: #fff; }
+    .btn-success:hover { background: #166638; }
 
-    /* ════ BATCH ENTRY ════ */
+    /* BATCH */
     .batch-intro { font-size: .87rem; color: var(--grey); margin-bottom: 18px; line-height: 1.6; }
-
     .batch-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
     .batch-controls input[type=text] {
       flex: 1; min-width: 180px; padding: 9px 13px;
       border: 1.5px solid var(--light-grey); border-radius: 6px;
-      font-family: "Roboto", sans-serif; font-size: .88rem; color: var(--black-olive);
-      background: var(--white);
+      font-family: "Roboto", sans-serif; font-size: .88rem; color: var(--black-olive); background: var(--white);
     }
     .batch-controls input[type=text]:focus { outline: none; border-color: var(--teal); }
-
-    .btn {
-      padding: 9px 18px; border-radius: 6px; border: none;
-      font-family: "Roboto", sans-serif; font-size: .88rem; font-weight: 600;
-      cursor: pointer; transition: all .15s;
-    }
-    .btn-primary { background: var(--teal); color: #fff; }
-    .btn-primary:hover { background: #58a8b9; }
-    .btn-secondary { background: var(--light-teal); color: var(--queen-blue); border: 1px solid var(--light-grey); }
-    .btn-secondary:hover { background: #d4edf2; }
-
-    /* EPA list rows */
     .epa-list { display: flex; flex-direction: column; }
     .epa-row {
       display: flex; align-items: center; gap: 14px;
-      padding: 10px 14px; border-bottom: 1px solid var(--light-grey);
-      transition: background .1s;
+      padding: 10px 14px; border-bottom: 1px solid var(--light-grey); transition: background .1s;
     }
     .epa-row:last-child { border-bottom: none; }
     .epa-row:nth-child(even) { background: var(--light-teal); }
     .epa-row:hover { background: #d4edf2; }
     .epa-row.hidden { display: none; }
-
-    .epa-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--light-teal); color: var(--queen-blue);
-      font-size: .75rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      border: 1px solid var(--light-grey);
-    }
+    .epa-num { width: 28px; height: 28px; border-radius: 50%; background: var(--light-teal); color: var(--queen-blue); font-size: .75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--light-grey); }
     .epa-name { flex: 1; font-size: .87rem; color: var(--black-olive); line-height: 1.35; }
-
     .epa-rating-select {
       width: auto; min-width: 230px; padding: 7px 32px 7px 10px;
       border: 1.5px solid var(--light-grey); border-radius: 6px;
-      font-family: "Roboto", sans-serif; font-size: .82rem;
-      color: var(--black-olive); background: var(--white);
+      font-family: "Roboto", sans-serif; font-size: .82rem; color: var(--black-olive); background: var(--white);
       cursor: pointer; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238E8D92' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center;
-      transition: border-color .15s;
+      background-repeat: no-repeat; background-position: right 10px center; transition: border-color .15s;
     }
-    .epa-rating-select.set {
-      border-color: var(--teal); background-color: var(--light-teal); font-weight: 600;
-    }
+    .epa-rating-select.set { border-color: var(--teal); background-color: var(--light-teal); font-weight: 600; }
     .epa-rating-select:focus { outline: none; border-color: var(--teal); }
-
-    /* Generate bar */
-    .generate-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px; padding: 16px 0 0;
-      border-top: 1px solid var(--light-grey); margin-top: 8px;
-    }
+    .generate-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 0 0; border-top: 1px solid var(--light-grey); margin-top: 8px; }
     .count-msg { font-size: .85rem; color: var(--grey); }
     .count-msg strong { color: var(--queen-blue); }
 
-    /* Batch results table */
-    table.batch-table {
-      border-collapse: collapse; width: 100%; font-size: .8rem; min-width: 600px;
-    }
-    table.batch-table th {
-      background: var(--queen-blue); color: #fff;
-      padding: 9px 10px; text-align: center; white-space: nowrap; font-weight: 600;
-    }
+    /* BATCH TABLE */
+    table.batch-table { border-collapse: collapse; width: 100%; font-size: .8rem; min-width: 600px; }
+    table.batch-table th { background: var(--queen-blue); color: #fff; padding: 9px 10px; text-align: center; white-space: nowrap; font-weight: 600; }
     table.batch-table th.epa-col   { text-align: left; min-width: 220px; }
     table.batch-table th.rating-col { background: #3d4f70; min-width: 160px; }
-    table.batch-table th.ms-group  {
-      background: var(--teal); font-family: Arial, sans-serif;
-      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px;
-    }
-    table.batch-table td {
-      padding: 8px 10px; border: 1px solid var(--light-grey);
-      text-align: center; font-weight: 700; color: #fff;
-    }
-    table.batch-table td.epa-cell {
-      background: var(--white); color: var(--black-olive);
-      font-weight: 500; text-align: left; font-size: .8rem;
-    }
+    table.batch-table th.ms-group  { background: var(--teal); font-family: Arial, sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; }
+    table.batch-table td { padding: 8px 10px; border: 1px solid var(--light-grey); text-align: center; font-weight: 700; color: #fff; }
+    table.batch-table td.epa-cell  { background: var(--white); color: var(--black-olive); font-weight: 500; text-align: left; font-size: .8rem; }
     table.batch-table tr:nth-child(even) td.epa-cell { background: var(--light-teal); }
-    table.batch-table td.rating-cell {
-      background: var(--light-teal); color: var(--queen-blue);
-      font-weight: 600; font-size: .78rem; line-height: 1.3;
-    }
+    table.batch-table td.rating-cell { background: var(--light-teal); color: var(--queen-blue); font-weight: 600; font-size: .78rem; line-height: 1.3; }
     table.batch-table tr:nth-child(even) td.rating-cell { background: #d4edf2; }
-    table.batch-table td.empty-cell {
-      background: #f0f2f4; color: #bbb; font-weight: 400; font-size: .72rem;
-    }
+    table.batch-table td.empty-cell { background: #f0f2f4; color: #bbb; font-weight: 400; font-size: .72rem; }
     table.batch-table tr:hover td { opacity: .88; }
-    table.batch-table tr:hover td.epa-cell,
-    table.batch-table tr:hover td.rating-cell { opacity: 1; }
+    table.batch-table tr:hover td.epa-cell, table.batch-table tr:hover td.rating-cell { opacity: 1; }
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: .75rem;
-      color: var(--grey);
-      border-top: 1px solid var(--light-grey);
-      background: var(--white);
-      margin-top: 20px;
+    /* ══ FILE UPLOAD TAB ══ */
+    .privacy-banner {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: #fff8e6; border: 1px solid #f0c040;
+      border-left: 4px solid #f0c040;
+      border-radius: 6px; padding: 14px 18px;
+      font-size: .84rem; color: #7a5a00; line-height: 1.5;
+      margin-bottom: 20px;
     }
+    .privacy-banner .icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+    .privacy-banner strong { color: #5a4000; }
+
+    .upload-zone {
+      border: 2px dashed var(--light-grey); border-radius: 8px;
+      padding: 40px 20px; text-align: center;
+      background: var(--snow); cursor: pointer;
+      transition: all .2s; position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--teal); background: var(--light-teal);
+    }
+    .upload-zone input[type=file] {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      opacity: 0; cursor: pointer;
+    }
+    .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .upload-zone .upload-label { font-size: .95rem; font-weight: 600; color: var(--queen-blue); margin-bottom: 4px; }
+    .upload-zone .upload-sub   { font-size: .8rem; color: var(--grey); }
+
+    .file-loaded-bar {
+      display: none; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+      background: var(--light-teal); border: 1px solid var(--teal);
+      border-radius: 6px; padding: 12px 16px;
+      font-size: .87rem; color: var(--queen-blue);
+    }
+    .file-loaded-bar .file-name { font-weight: 600; }
+    .file-loaded-bar .file-meta { font-size: .8rem; color: var(--grey); }
+
+    .col-map-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin: 18px 0;
+    }
+    .col-map-item label { display: block; font-size: .8rem; font-weight: 600; color: var(--queen-blue); margin-bottom: 6px; }
+
+    /* Upload results table — scrollable, same style as batch */
+    .upload-results-wrap { overflow-x: auto; max-height: 500px; overflow-y: auto; }
+    table.upload-table { border-collapse: collapse; font-size: .78rem; min-width: 700px; }
+    table.upload-table th { background: var(--queen-blue); color: #fff; padding: 8px 10px; text-align: left; white-space: nowrap; font-weight: 600; position: sticky; top: 0; z-index: 1; }
+    table.upload-table th.ms-col { background: var(--teal); text-align: center; }
+    table.upload-table th.ms-group-header { background: var(--teal); font-family: Arial, sans-serif; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
+    table.upload-table td { padding: 7px 10px; border: 1px solid var(--light-grey); color: var(--black-olive); vertical-align: top; }
+    table.upload-table td.ms-score-cell { text-align: center; font-weight: 700; color: #fff; white-space: nowrap; }
+    table.upload-table td.no-match { background: #fff3f3; color: #c0392b; font-size: .75rem; font-style: italic; }
+    table.upload-table td.empty-ms { background: #f0f2f4; color: #bbb; text-align: center; font-size: .72rem; }
+    table.upload-table tr:nth-child(even) td { background-color: var(--light-teal); }
+    table.upload-table tr:nth-child(even) td.ms-score-cell { /* colour handled inline */ }
+    table.upload-table tr:hover td { opacity: .88; }
+
+    .results-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+    }
+    .results-stats { font-size: .84rem; color: var(--grey); }
+    .results-stats strong { color: var(--queen-blue); }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 20px; font-size: .75rem; color: var(--grey); border-top: 1px solid var(--light-grey); background: var(--white); margin-top: 20px; }
 
     @media (max-width: 640px) {
       header { padding: 14px 16px; }
       .card  { padding: 18px 16px; }
       main   { padding: 18px 12px 40px; }
       .tab-bar { padding: 0 12px; }
-      .epa-rating-select { min-width: 160px; }
+      .col-map-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
   <div class="header-left">
     <div class="simpl-logo-wrap">
-      <!-- Logo will be swapped to <img> once PNG is embedded -->
-      <span class="simpl-wordmark" id="simpl-logo-text">SIMPL</span>
+      <span class="simpl-wordmark">SIMPL</span>
     </div>
     <div class="header-divider"></div>
     <div class="header-title-wrap">
@@ -370,36 +303,25 @@
   </div>
 </header>
 
-<!-- ── TABS ── -->
 <div class="tab-bar">
   <button class="tab-btn active" data-tab="quick">🔍 Quick Lookup</button>
   <button class="tab-btn"        data-tab="batch">📋 Batch Entry</button>
+  <button class="tab-btn"        data-tab="upload">📂 File Upload</button>
 </div>
 
 <main>
 
   <!-- ══ TAB 1: QUICK LOOKUP ══ -->
   <div class="tab-panel active" id="tab-quick">
-
     <div class="card">
-      <div class="step-label">
-        <div class="step-badge">1</div>
-        <span>Select an Entrustable Professional Activity (EPA)</span>
-      </div>
-      <select id="epa-select">
-        <option value="">— Choose an EPA —</option>
-      </select>
+      <div class="step-label"><div class="step-badge">1</div><span>Select an Entrustable Professional Activity (EPA)</span></div>
+      <select id="epa-select"><option value="">— Choose an EPA —</option></select>
     </div>
-
     <div class="card">
-      <div class="step-label">
-        <div class="step-badge">2</div>
-        <span>Select the Supervisor Rating</span>
-      </div>
+      <div class="step-label"><div class="step-badge">2</div><span>Select the Supervisor Rating</span></div>
       <div class="rating-grid" id="rating-grid"></div>
     </div>
-
-    <div id="quick-results" style="display:none; flex-direction:column; gap:24px;">
+    <div id="quick-results" style="display:none;flex-direction:column;gap:24px;">
       <div class="card">
         <div class="card-title">Suggested Milestone Ratings</div>
         <hr class="teal-rule" />
@@ -408,72 +330,117 @@
       <div class="card">
         <div class="card-title">Full Rating Map for Selected EPA</div>
         <hr class="teal-rule" />
-        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">
-          The highlighted row shows your selected rating. All milestone scores are shown for reference.
-        </p>
-        <div class="heatmap-wrap">
-          <table class="heatmap" id="heatmap"></table>
-        </div>
+        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">The highlighted row shows your selected rating.</p>
+        <div class="heatmap-wrap"><table class="heatmap" id="heatmap"></table></div>
         <div class="legend" id="legend"></div>
       </div>
     </div>
-
     <div id="quick-placeholder" class="card">
-      <div class="placeholder">
-        <div class="icon">🔍</div>
-        <div>Select an EPA and rating above to see suggested Milestone ratings and the full heat map.</div>
-      </div>
+      <div class="placeholder"><div class="icon">🔍</div><div>Select an EPA and rating above to see suggested Milestone ratings and the full heat map.</div></div>
     </div>
-
   </div>
 
   <!-- ══ TAB 2: BATCH ENTRY ══ -->
   <div class="tab-panel" id="tab-batch">
-
     <div class="card">
       <div class="card-title">Batch Entry</div>
       <hr class="teal-rule" />
-      <p class="batch-intro">
-        Assign a supervisor rating to as many EPAs as needed, then click <strong>Generate Summary</strong> to see all suggested Milestone ratings side by side in one table.
-      </p>
-
+      <p class="batch-intro">Assign a supervisor rating to as many EPAs as needed, then click <strong>Generate Summary</strong> to see all suggested Milestone ratings side by side.</p>
       <div class="batch-controls">
         <input type="text" id="epa-search" placeholder="🔎  Filter EPAs by keyword…" />
         <button class="btn btn-secondary" id="clear-all-btn">Clear All Ratings</button>
       </div>
-
       <div class="epa-list" id="epa-list"></div>
-
       <div class="generate-bar">
         <div class="count-msg" id="count-msg">No ratings selected yet.</div>
         <button class="btn btn-primary" id="generate-btn">Generate Summary →</button>
       </div>
     </div>
-
     <div id="batch-results" style="display:none;">
       <div class="card">
         <div class="card-title">Milestone Rating Summary</div>
         <hr class="teal-rule" />
-        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">
-          Suggested ratings for each EPA × Milestone combination. Cells showing — indicate that milestone is not mapped to that EPA.
-        </p>
-        <div class="heatmap-wrap">
-          <table class="batch-table" id="batch-table"></table>
-        </div>
+        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">Suggested ratings for each EPA × Milestone. Cells showing — are not mapped to that EPA.</p>
+        <div class="heatmap-wrap"><table class="batch-table" id="batch-table"></table></div>
         <div class="legend" id="batch-legend"></div>
       </div>
     </div>
-
   </div>
+
+  <!-- ══ TAB 3: FILE UPLOAD ══ -->
+  <div class="tab-panel" id="tab-upload">
+
+    <div class="card">
+      <div class="card-title">File Upload</div>
+      <hr class="teal-rule" />
+
+      <!-- Privacy banner -->
+      <div class="privacy-banner">
+        <div class="icon">⚠️</div>
+        <div>
+          <strong>Privacy reminder:</strong> This tool processes your file entirely in your browser — no data is sent to any server or stored anywhere. However, before uploading, please ensure your file does not contain identifying information such as names or free-text feedback. Only columns needed for the lookup (EPA activity and involvement) are required.
+        </div>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="file-input" accept=".csv" />
+        <div class="upload-icon">📂</div>
+        <div class="upload-label">Drop a CSV file here, or click to browse</div>
+        <div class="upload-sub">Accepts .csv files · Processed locally in your browser</div>
+      </div>
+
+      <!-- File loaded confirmation -->
+      <div class="file-loaded-bar" id="file-loaded-bar">
+        <div>
+          <div class="file-name" id="file-name-label"></div>
+          <div class="file-meta" id="file-meta-label"></div>
+        </div>
+        <button class="btn btn-secondary" id="clear-file-btn">✕ Remove file</button>
+      </div>
+
+      <!-- Column mapping -->
+      <div id="col-map-section" style="display:none;">
+        <p style="font-size:.85rem;color:var(--grey);margin:18px 0 4px;">Confirm which columns contain the EPA activity and involvement rating:</p>
+        <div class="col-map-grid">
+          <div class="col-map-item">
+            <label>EPA / Activity column</label>
+            <select id="col-epa"></select>
+          </div>
+          <div class="col-map-item">
+            <label>Involvement Rating column</label>
+            <select id="col-rating"></select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="run-mapping-btn">Add Milestone Ratings →</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="upload-results-card" style="display:none;" class="card">
+      <div class="card-title">Enriched Results</div>
+      <hr class="teal-rule" />
+      <div class="results-toolbar">
+        <div class="results-stats" id="upload-stats"></div>
+        <button class="btn btn-success" id="download-csv-btn">⬇ Download Enriched CSV</button>
+      </div>
+      <div class="upload-results-wrap">
+        <table class="upload-table" id="upload-table"></table>
+      </div>
+      <div class="legend" id="upload-legend" style="margin-top:14px;"></div>
+    </div>
+
+  </div><!-- /tab-upload -->
 
 </main>
 
 <footer>
-  © SIMPL — Society for Improving Medical Professional Learning &nbsp;·&nbsp; <a href="https://simpl.org" style="color:var(--teal);text-decoration:none;">simpl.org</a>
+  © SIMPL — Society for Improving Medical Professional Learning &nbsp;·&nbsp;
+  <a href="https://simpl.org" style="color:var(--teal);text-decoration:none;">simpl.org</a>
 </footer>
 
 <script>
-// ─── DATA ─────────────────────────────────────────────────────────────────
+// ─── SHARED DATA ───────────────────────────────────────────────────────────
 const RATINGS = [
   { label: "I had to do it",                        emoji: "🔴" },
   { label: "I helped a lot",                        emoji: "🟠" },
@@ -486,28 +453,19 @@ const EPA_MILESTONES = {"Initiate treatment for a patient requiring emergent/imm
 
 const LOOKUP = {"Initiate treatment for a patient requiring emergent/immediate intervention": {"I had to do it": {"PC1": "1", "PC2": "1", "PC5": "1", "MK2": "1", "ICS2": "1"}, "I helped a lot": {"PC1": "1", "PC2": "1", "PC5": "1", "MK2": "1", "ICS2": "1.5"}, "I helped a little": {"PC1": "1.5", "PC2": "2", "PC5": "1.5", "MK2": "1.5", "ICS2": "2"}, "I needed to be there but did not help": {"PC1": "1.5", "PC2": "2", "PC5": "2", "MK2": "1.5", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC1": "2", "PC2": "3", "PC5": "2.5", "MK2": "2", "ICS2": "3"}}, "Lead the resuscitation of a critically ill or injured patient": {"I had to do it": {"PC1": "1", "PC2": "1", "PC3": "1", "PC4": "1", "PC5": "1", "PC6": "1", "MK1": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC1": "2", "PC2": "1", "PC3": "1.5", "PC4": "1", "PC5": "1.5", "PC6": "1.5", "MK1": "1", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC1": "3", "PC2": "2", "PC3": "2", "PC4": "2", "PC5": "2", "PC6": "2", "MK1": "2", "MK2": "2", "ICS1": "2", "ICS2": "2"}, "I needed to be there but did not help": {"PC1": "4", "PC2": "3", "PC3": "2.5", "PC4": "3", "PC5": "3", "PC6": "3", "MK1": "3", "MK2": "3", "ICS1": "3", "ICS2": "3"}, "I didn't need to be there at all": {"PC1": "5", "PC2": "4", "PC3": "3", "PC4": "4", "PC5": "4", "PC6": "4", "MK1": "4", "MK2": "4", "ICS1": "4", "ICS2": "4"}}, "Obtain and interpret a focused history using data from all necessary sources": {"I had to do it": {"PC2": "1", "MK1": "1", "ICS1": "1"}, "I helped a lot": {"PC2": "1", "MK1": "1", "ICS1": "1.5"}, "I helped a little": {"PC2": "2", "MK1": "2", "ICS1": "2"}, "I needed to be there but did not help": {"PC2": "3", "MK1": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC2": "4", "MK1": "4", "ICS1": "3.5"}}, "Perform and interpret a focused physical examination": {"I had to do it": {"PC2": "1", "PC4": "1", "MK1": "1"}, "I helped a lot": {"PC2": "1", "PC4": "1", "MK1": "1"}, "I helped a little": {"PC2": "2", "PC4": "2", "MK1": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC4": "3", "MK1": "3"}, "I didn't need to be there at all": {"PC2": "4", "PC4": "4", "MK1": "4"}}, "Create and prioritize a differential diagnosis": {"I had to do it": {"PC2": "1", "PC3": "1", "PC4": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC2": "1", "PC3": "1.5", "PC4": "1", "MK1": "1", "MK2": "1"}, "I helped a little": {"PC2": "2", "PC3": "2", "PC4": "1", "MK1": "2", "MK2": "1.5"}, "I needed to be there but did not help": {"PC2": "3", "PC3": "2.5", "PC4": "1", "MK1": "3", "MK2": "1.5"}, "I didn't need to be there at all": {"PC2": "4", "PC3": "3", "PC4": "2", "MK1": "4", "MK2": "2"}}, "Order and interpret diagnostic tests": {"I had to do it": {"PC3": "1", "PC4": "1", "MK1": "1", "MK2": "1", "PBL1": "1"}, "I helped a lot": {"PC3": "2", "PC4": "1", "MK1": "1", "MK2": "1.5", "PBL1": "1"}, "I helped a little": {"PC3": "3", "PC4": "2", "MK1": "2", "MK2": "2", "PBL1": "2"}, "I needed to be there but did not help": {"PC3": "4", "PC4": "3", "MK1": "3", "MK2": "3", "PBL1": "2"}, "I didn't need to be there at all": {"PC3": "5", "PC4": "4", "MK1": "4", "MK2": "4", "PBL1": "3"}}, "Apply best available evidence to guide patient care": {"I had to do it": {"MK1": "1", "MK2": "1", "PBL1": "1"}, "I helped a lot": {"MK1": "2", "MK2": "1.5", "PBL1": "1"}, "I helped a little": {"MK1": "3", "MK2": "2", "PBL1": "2"}, "I needed to be there but did not help": {"MK1": "4", "MK2": "3", "PBL1": "3"}, "I didn't need to be there at all": {"MK1": "5", "MK2": "4", "PBL1": "4"}}, "Manage clinical or diagnostic uncertainty when caring for patients": {"I had to do it": {"PC3": "1", "PC4": "1", "PC6": "1", "MK1": "1", "MK2": "1", "PBL1": "1", "ICS1": "1"}, "I helped a lot": {"PC3": "1.5", "PC4": "1", "PC6": "1.5", "MK1": "1", "MK2": "1.5", "PBL1": "1", "ICS1": "1.5"}, "I helped a little": {"PC3": "2", "PC4": "2", "PC6": "2", "MK1": "2", "MK2": "2", "PBL1": "2", "ICS1": "2"}, "I needed to be there but did not help": {"PC3": "2.5", "PC4": "3", "PC6": "3", "MK1": "3", "MK2": "3", "PBL1": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC3": "3", "PC4": "4", "PC6": "4", "MK1": "4", "MK2": "4", "PBL1": "4", "ICS1": "4"}}, "Utilize observation and reassessment to guide decision-making": {"I had to do it": {"PC2": "1", "PC6": "1", "MK2": "1"}, "I helped a lot": {"PC2": "1", "PC6": "1.5", "MK2": "1.5"}, "I helped a little": {"PC2": "2", "PC6": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC6": "3", "MK2": "3"}, "I didn't need to be there at all": {"PC2": "4", "PC6": "4", "MK2": "4"}}, "Develop and implement an appropriate disposition and aftercare plan": {"I had to do it": {"PC6": "1", "MK2": "1", "SBP4": "1", "ICS1": "1"}, "I helped a lot": {"PC6": "1.5", "MK2": "1.5", "SBP4": "2", "ICS1": "1.5"}, "I helped a little": {"PC6": "2", "MK2": "2", "SBP4": "2.5", "ICS1": "2"}, "I needed to be there but did not help": {"PC6": "3", "MK2": "3", "SBP4": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC6": "4", "MK2": "4", "SBP4": "3.5", "ICS1": "4"}}, "Perform the diagnostic and therapeutic procedures of an emergency physician": {"I had to do it": {"PC2": "1", "PC8": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC2": "1", "PC8": "1.5", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC2": "2", "PC8": "2", "MK2": "2", "ICS1": "2.5", "ICS2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC8": "3", "MK2": "3", "ICS1": "3", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC2": "4", "PC8": "4", "MK2": "4", "ICS1": "3.5", "ICS2": "3"}}, "Provide invasive and non-invasive airway management": {"I had to do it": {"PC1": "1", "PC5": "1", "PC8": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC1": "1", "PC5": "1.5", "PC8": "1.5", "MK1": "1", "MK2": "1.5"}, "I helped a little": {"PC1": "1.5", "PC5": "2", "PC8": "2", "MK1": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC1": "1.5", "PC5": "2.5", "PC8": "3", "MK1": "2", "MK2": "3"}, "I didn't need to be there at all": {"PC1": "2", "PC5": "3", "PC8": "4", "MK1": "3", "MK2": "4"}}, "Perform and interpret point-of-care ultrasound": {"I had to do it": {"PC3": "1", "PC8": "1"}, "I helped a lot": {"PC3": "1", "PC8": "1"}, "I helped a little": {"PC3": "1.5", "PC8": "1"}, "I needed to be there but did not help": {"PC3": "2", "PC8": "1"}, "I didn't need to be there at all": {"PC3": "2.5", "PC8": "1.5"}}, "Perform procedure sedation": {"I had to do it": {"PC2": "1", "PC5": "1", "PC6": "1", "PC8": "1", "MK1": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC2": "1", "PC5": "1", "PC6": "1.5", "PC8": "1.5", "MK1": "1", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC2": "2", "PC5": "2", "PC6": "2", "PC8": "2", "MK1": "2", "MK2": "2", "ICS1": "2", "ICS2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC5": "3", "PC6": "3", "PC8": "3", "MK1": "2", "MK2": "2.5", "ICS1": "3", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC2": "4", "PC5": "4", "PC6": "4", "PC8": "4", "MK1": "3", "MK2": "3.5", "ICS1": "4", "ICS2": "3"}}, "Implement pharmacologic and therapeutic management plans": {"I had to do it": {"PC5": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC5": "1.5", "MK1": "1", "MK2": "1.5"}, "I helped a little": {"PC5": "2", "MK1": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC5": "3", "MK1": "3", "MK2": "3"}, "I didn't need to be there at all": {"PC5": "4", "MK1": "4", "MK2": "4"}}, "Provide palliative and end-of-life care for patients and their families": {"I had to do it": {"PC5": "1", "PC6": "1", "MK2": "1", "SBP3": "1", "ICS1": "1", "ICS2": "1", "PROF1": "1"}, "I helped a lot": {"PC5": "1.5", "PC6": "1.5", "MK2": "1.5", "SBP3": "1.5", "ICS1": "1.5", "ICS2": "1.5", "PROF1": "1.5"}, "I helped a little": {"PC5": "2", "PC6": "2", "MK2": "2", "SBP3": "2", "ICS1": "2", "ICS2": "2", "PROF1": "2"}, "I needed to be there but did not help": {"PC5": "2.5", "PC6": "3", "MK2": "3", "SBP3": "2.5", "ICS1": "3", "ICS2": "2.5", "PROF1": "2.5"}, "I didn't need to be there at all": {"PC5": "3", "PC6": "4", "MK2": "4", "SBP3": "3", "ICS1": "4", "ICS2": "3", "PROF1": "3"}}, "Document the emergency department encounter": {"I had to do it": {"PROF2": "1", "ICS3": "1", "SBP4": "1"}, "I helped a lot": {"PROF2": "1.5", "ICS3": "1.5", "SBP4": "1.5"}, "I helped a little": {"PROF2": "2", "ICS3": "2", "SBP4": "1.5"}, "I needed to be there but did not help": {"PROF2": "2.5", "ICS3": "2.5", "SBP4": "2"}, "I didn't need to be there at all": {"PROF2": "3", "ICS3": "3.5", "SBP4": "2.5"}}, "Communicate with other healthcare professionals about patient care": {"I had to do it": {"SBP3": "1", "SBP4": "1", "PROF1": "1", "PROF2": "1", "ICS2": "1", "ICS3": "1"}, "I helped a lot": {"SBP3": "1.5", "SBP4": "1.5", "PROF1": "1.5", "PROF2": "1.5", "ICS2": "1.5", "ICS3": "1.5"}, "I helped a little": {"SBP3": "2", "SBP4": "2", "PROF1": "2", "PROF2": "2", "ICS2": "2", "ICS3": "2"}, "I needed to be there but did not help": {"SBP3": "2.5", "SBP4": "3", "PROF1": "2.5", "PROF2": "2.5", "ICS2": "3", "ICS3": "3"}, "I didn't need to be there at all": {"SBP3": "3", "SBP4": "4", "PROF1": "3", "PROF2": "3", "ICS2": "4", "ICS3": "4"}}, "Communicate with the patient, family, and caregivers": {"I had to do it": {"ICS1": "1", "PROF1": "1", "PROF2": "1"}, "I helped a lot": {"ICS1": "1.5", "PROF1": "1.5", "PROF2": "1.5"}, "I helped a little": {"ICS1": "2", "PROF1": "2", "PROF2": "2"}, "I needed to be there but did not help": {"ICS1": "3", "PROF1": "2.5", "PROF2": "2.5"}, "I didn't need to be there at all": {"ICS1": "4", "PROF1": "3", "PROF2": "3"}}, "Provide supervision or consultation for other healthcare professionals": {"I had to do it": {"MK2": "1", "SBP1": "<1", "SBP4": "1", "ICS2": "1", "ICS3": "1"}, "I helped a lot": {"MK2": "1.5", "SBP1": "<1", "SBP4": "1.5", "ICS2": "1.5", "ICS3": "1.5"}, "I helped a little": {"MK2": "2", "SBP1": "<1", "SBP4": "2", "ICS2": "2", "ICS3": "2"}, "I needed to be there but did not help": {"MK2": "3", "SBP1": "<1", "SBP4": "2.5", "ICS2": "3", "ICS3": "3"}, "I didn't need to be there at all": {"MK2": "4", "SBP1": "1", "SBP4": "3", "ICS2": "4", "ICS3": "4"}}, "Manage the emergency department flow to optimize patient care": {"I had to do it": {"PC6": "1", "PC7": "1", "SBP3": "1", "SBP4": "1", "ICS2": "1", "ICS3": "1", "PROF2": "1"}, "I helped a lot": {"PC6": "1.5", "PC7": "2", "SBP3": "1.5", "SBP4": "2", "ICS2": "1.5", "ICS3": "1.5", "PROF2": "1.5"}, "I helped a little": {"PC6": "2", "PC7": "3", "SBP3": "2", "SBP4": "2.5", "ICS2": "2", "ICS3": "2", "PROF2": "2"}, "I needed to be there but did not help": {"PC6": "3", "PC7": "4", "SBP3": "2.5", "SBP4": "3", "ICS2": "3", "ICS3": "3", "PROF2": "3"}, "I didn't need to be there at all": {"PC6": "4", "PC7": "5", "SBP3": "3", "SBP4": "3.5", "ICS2": "4", "ICS3": "4", "PROF2": "4"}}, "Fulfill professional obligations and adhere to professional standards": {"I had to do it": {"PBL2": "1", "PROF1": "1", "PROF2": "1", "PROF3": "1"}, "I helped a lot": {"PBL2": "1.5", "PROF1": "1.5", "PROF2": "1.5", "PROF3": "1"}, "I helped a little": {"PBL2": "2", "PROF1": "2", "PROF2": "2", "PROF3": "2"}, "I needed to be there but did not help": {"PBL2": "2.5", "PROF1": "2.5", "PROF2": "3", "PROF3": "3"}, "I didn't need to be there at all": {"PBL2": "3", "PROF1": "3", "PROF2": "4", "PROF3": "4"}}};
 
-const SCORE_COLORS = {
-  "<1":"#7f8c8d","1":"#c0392b","1.5":"#e06c1a",
-  "2":"#e8a010","2.5":"#c9b800","3":"#6aab25",
-  "3.5":"#3d9e3d","4":"#1e8a4a","5":"#0a6e36"
-};
-const SCORE_LABELS = {
-  "<1":"Below 1","1":"Level 1","1.5":"Level 1–2","2":"Level 2",
-  "2.5":"Level 2–3","3":"Level 3","3.5":"Level 3–4","4":"Level 4","5":"Level 5"
-};
-
+const SCORE_COLORS = {"<1":"#7f8c8d","1":"#c0392b","1.5":"#e06c1a","2":"#e8a010","2.5":"#c9b800","3":"#6aab25","3.5":"#3d9e3d","4":"#1e8a4a","5":"#0a6e36"};
+const SCORE_LABELS = {"<1":"Below 1","1":"Level 1","1.5":"Level 1–2","2":"Level 2","2.5":"Level 2–3","3":"Level 3","3.5":"Level 3–4","4":"Level 4","5":"Level 5"};
 const MS_GROUPS = [
-  { label:"PC",   members:["PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8"] },
-  { label:"MK",   members:["MK1","MK2"] },
-  { label:"PBL",  members:["PBL1","PBL2"] },
-  { label:"ICS",  members:["ICS1","ICS2","ICS3"] },
-  { label:"SBP",  members:["SBP1","SBP3","SBP4"] },
-  { label:"PROF", members:["PROF1","PROF2","PROF3"] },
+  {label:"PC",   members:["PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8"]},
+  {label:"MK",   members:["MK1","MK2"]},
+  {label:"PBL",  members:["PBL1","PBL2"]},
+  {label:"ICS",  members:["ICS1","ICS2","ICS3"]},
+  {label:"SBP",  members:["SBP1","SBP3","SBP4"]},
+  {label:"PROF", members:["PROF1","PROF2","PROF3"]},
 ];
 const ALL_MS_ORDERED = MS_GROUPS.flatMap(g => g.members);
 
 function scoreColor(s) { return SCORE_COLORS[s] || "#bbb"; }
-
 function buildLegend(el, usedScores) {
   el.innerHTML = `<span style="font-size:.75rem;color:var(--grey);font-weight:600;margin-right:4px;">Scale:</span>`;
   ["<1","1","1.5","2","2.5","3","3.5","4","5"].forEach(s => {
@@ -534,7 +492,6 @@ const quickPlaceholder = document.getElementById("quick-placeholder");
 const msCards          = document.getElementById("milestone-cards");
 const heatmapEl        = document.getElementById("heatmap");
 const legendEl         = document.getElementById("legend");
-
 let selectedEPA = null, selectedRating = null;
 
 Object.keys(LOOKUP).forEach(epa => {
@@ -542,11 +499,9 @@ Object.keys(LOOKUP).forEach(epa => {
   opt.value = epa; opt.textContent = epa;
   epaSelect.appendChild(opt);
 });
-
 RATINGS.forEach(r => {
   const pill = document.createElement("div");
-  pill.className = "rating-pill";
-  pill.dataset.rating = r.label;
+  pill.className = "rating-pill"; pill.dataset.rating = r.label;
   pill.innerHTML = `<span class="emoji">${r.emoji}</span>${r.label}`;
   pill.addEventListener("click", () => {
     selectedRating = r.label;
@@ -555,37 +510,30 @@ RATINGS.forEach(r => {
   });
   ratingGrid.appendChild(pill);
 });
-
 epaSelect.addEventListener("change", () => {
-  selectedEPA = epaSelect.value || null;
-  selectedRating = null;
+  selectedEPA = epaSelect.value || null; selectedRating = null;
   document.querySelectorAll(".rating-pill").forEach(p => p.classList.remove("selected"));
   renderQuick();
 });
-
 function renderQuick() {
   const ready = selectedEPA && selectedRating;
-  quickResults.style.display    = ready ? "flex" : "none";
-  quickResults.style.flexDirection = "column";
-  quickResults.style.gap = "24px";
+  quickResults.style.display = ready ? "flex" : "none";
+  quickResults.style.flexDirection = "column"; quickResults.style.gap = "24px";
   quickPlaceholder.style.display = ready ? "none" : "block";
   if (!ready) return;
-
   const milestones = EPA_MILESTONES[selectedEPA] || [];
   const ratingData = LOOKUP[selectedEPA]?.[selectedRating] || {};
   const epaData    = LOOKUP[selectedEPA] || {};
-
   msCards.innerHTML = "";
   milestones.forEach(ms => {
     const score = ratingData[ms] ?? "—";
-    const card  = document.createElement("div");
+    const card = document.createElement("div");
     card.className = "milestone-card";
     const bg = score !== "—" ? scoreColor(score) : "#bbb";
     card.style.background = card.style.borderColor = bg;
     card.innerHTML = `<div class="ms-name">${ms}</div><div class="ms-score">${score}</div><div class="ms-label">${SCORE_LABELS[score]??""}</div>`;
     msCards.appendChild(card);
   });
-
   let html = "<thead><tr><th class='row-header'>Supervisor Rating</th>";
   milestones.forEach(ms => { html += `<th>${ms}</th>`; });
   html += "</tr></thead><tbody>";
@@ -612,59 +560,44 @@ const countMsg    = document.getElementById("count-msg");
 const batchResults= document.getElementById("batch-results");
 const batchTable  = document.getElementById("batch-table");
 const batchLegend = document.getElementById("batch-legend");
-
 const ALL_EPAS = Object.keys(LOOKUP);
 const batchSelections = {};
 
 ALL_EPAS.forEach((epa, i) => {
   const row = document.createElement("div");
-  row.className = "epa-row";
-  row.dataset.epa = epa;
+  row.className = "epa-row"; row.dataset.epa = epa;
   row.innerHTML = `<div class="epa-num">${i+1}</div><div class="epa-name">${epa}</div>`;
-
   const sel = document.createElement("select");
   sel.className = "epa-rating-select";
   sel.innerHTML = `<option value="">— No rating —</option>` +
     RATINGS.map(r => `<option value="${r.label}">${r.emoji} ${r.label}</option>`).join("");
-
   sel.addEventListener("change", () => {
     if (sel.value) { batchSelections[epa] = sel.value; sel.classList.add("set"); }
     else           { delete batchSelections[epa];      sel.classList.remove("set"); }
     updateCount();
   });
-
-  row.appendChild(sel);
-  epaListEl.appendChild(row);
+  row.appendChild(sel); epaListEl.appendChild(row);
 });
-
 function updateCount() {
   const n = Object.keys(batchSelections).length;
   countMsg.innerHTML = n===0 ? "No ratings selected yet."
     : `<strong>${n}</strong> EPA${n!==1?"s":""} rated — ready to generate.`;
 }
-
 epaSearch.addEventListener("input", () => {
   const q = epaSearch.value.toLowerCase();
-  document.querySelectorAll(".epa-row").forEach(row => {
-    row.classList.toggle("hidden", !row.dataset.epa.toLowerCase().includes(q));
-  });
+  document.querySelectorAll(".epa-row").forEach(row => row.classList.toggle("hidden", !row.dataset.epa.toLowerCase().includes(q)));
 });
-
 clearAllBtn.addEventListener("click", () => {
   document.querySelectorAll(".epa-rating-select").forEach(sel => { sel.value=""; sel.classList.remove("set"); });
   Object.keys(batchSelections).forEach(k => delete batchSelections[k]);
-  updateCount();
-  batchResults.style.display = "none";
+  updateCount(); batchResults.style.display = "none";
 });
-
 generateBtn.addEventListener("click", () => {
   const entries = Object.entries(batchSelections);
   if (!entries.length) { alert("Please assign a rating to at least one EPA."); return; }
-
   const msSet = new Set();
   entries.forEach(([epa]) => (EPA_MILESTONES[epa]||[]).forEach(ms => msSet.add(ms)));
   const colMilestones = ALL_MS_ORDERED.filter(ms => msSet.has(ms));
-
   let html = "<thead><tr><th class='epa-col' rowspan='2'>EPA</th><th class='rating-col' rowspan='2'>Rating</th>";
   MS_GROUPS.forEach(g => {
     const cols = g.members.filter(ms => colMilestones.includes(ms));
@@ -673,7 +606,6 @@ generateBtn.addEventListener("click", () => {
   html += "</tr><tr>";
   colMilestones.forEach(ms => { html += `<th>${ms}</th>`; });
   html += "</tr></thead><tbody>";
-
   const usedScores = new Set();
   entries.forEach(([epa, rating]) => {
     const rd   = LOOKUP[epa]?.[rating] || {};
@@ -686,14 +618,227 @@ generateBtn.addEventListener("click", () => {
     });
     html += "</tr>";
   });
-
   batchTable.innerHTML = html + "</tbody>";
   buildLegend(batchLegend, usedScores);
   batchResults.style.display = "block";
-  batchResults.scrollIntoView({ behavior:"smooth", block:"start" });
+  batchResults.scrollIntoView({behavior:"smooth",block:"start"});
+});
+updateCount();
+
+// ═══ FILE UPLOAD ═══════════════════════════════════════════════════════════
+const uploadZone       = document.getElementById("upload-zone");
+const fileInput        = document.getElementById("file-input");
+const fileLoadedBar    = document.getElementById("file-loaded-bar");
+const fileNameLabel    = document.getElementById("file-name-label");
+const fileMetaLabel    = document.getElementById("file-meta-label");
+const clearFileBtn     = document.getElementById("clear-file-btn");
+const colMapSection    = document.getElementById("col-map-section");
+const colEpaSelect     = document.getElementById("col-epa");
+const colRatingSelect  = document.getElementById("col-rating");
+const runMappingBtn    = document.getElementById("run-mapping-btn");
+const uploadResultsCard= document.getElementById("upload-results-card");
+const uploadStats      = document.getElementById("upload-stats");
+const uploadTable      = document.getElementById("upload-table");
+const uploadLegend     = document.getElementById("upload-legend");
+const downloadCsvBtn   = document.getElementById("download-csv-btn");
+
+let parsedRows = [];   // array of objects (one per CSV row)
+let csvHeaders = [];   // original header names
+let enrichedRows = []; // rows after milestone columns added
+
+// Drag-and-drop
+uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("drag-over"); });
+uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("drag-over"));
+uploadZone.addEventListener("drop", e => { e.preventDefault(); uploadZone.classList.remove("drag-over"); handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
+
+function parseCSV(text) {
+  // Handles quoted fields with commas and newlines
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], next = text[i+1];
+    if (inQuotes) {
+      if (ch === '"' && next === '"') { field += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { field += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { row.push(field.trim()); field = ""; }
+      else if (ch === '\n' || (ch === '\r' && next === '\n')) {
+        row.push(field.trim()); rows.push(row); row = []; field = "";
+        if (ch === '\r') i++;
+      } else { field += ch; }
+    }
+  }
+  if (field || row.length) { row.push(field.trim()); rows.push(row); }
+  return rows.filter(r => r.some(c => c !== ""));
+}
+
+function handleFile(file) {
+  if (!file || !file.name.endsWith(".csv")) { alert("Please upload a .csv file."); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const raw = parseCSV(e.target.result);
+    if (raw.length < 2) { alert("File appears to be empty."); return; }
+    csvHeaders = raw[0];
+    parsedRows = raw.slice(1).map(r => {
+      const obj = {};
+      csvHeaders.forEach((h, i) => { obj[h] = r[i] ?? ""; });
+      return obj;
+    });
+
+    // Show file info
+    fileNameLabel.textContent = file.name;
+    fileMetaLabel.textContent = `${parsedRows.length} rows · ${csvHeaders.length} columns`;
+    fileLoadedBar.style.display = "flex";
+    uploadZone.style.display = "none";
+
+    // Populate column selectors — try to auto-detect
+    [colEpaSelect, colRatingSelect].forEach(sel => {
+      sel.innerHTML = csvHeaders.map(h => `<option value="${h}">${h}</option>`).join("");
+    });
+    const epaGuess    = csvHeaders.find(h => /activity/i.test(h)) || csvHeaders[0];
+    const ratingGuess = csvHeaders.find(h => /involvement rating/i.test(h)) ||
+                        csvHeaders.find(h => /rating/i.test(h)) || csvHeaders[1];
+    colEpaSelect.value    = epaGuess;
+    colRatingSelect.value = ratingGuess;
+
+    colMapSection.style.display = "block";
+    uploadResultsCard.style.display = "none";
+  };
+  reader.readAsText(file);
+}
+
+clearFileBtn.addEventListener("click", () => {
+  parsedRows = []; csvHeaders = []; enrichedRows = [];
+  fileInput.value = "";
+  fileLoadedBar.style.display = "none";
+  uploadZone.style.display = "block";
+  colMapSection.style.display = "none";
+  uploadResultsCard.style.display = "none";
 });
 
-updateCount();
+runMappingBtn.addEventListener("click", () => {
+  const epaCol    = colEpaSelect.value;
+  const ratingCol = colRatingSelect.value;
+
+  // Find all unique milestones that appear across matched EPAs
+  const msSet = new Set();
+  parsedRows.forEach(row => {
+    const epa = row[epaCol];
+    if (EPA_MILESTONES[epa]) EPA_MILESTONES[epa].forEach(ms => msSet.add(ms));
+  });
+  const colMilestones = ALL_MS_ORDERED.filter(ms => msSet.has(ms));
+
+  let matched = 0, unmatched = 0;
+  const usedScores = new Set();
+
+  enrichedRows = parsedRows.map(row => {
+    const epa    = row[epaCol];
+    const rating = row[ratingCol];
+    const msScores = {};
+    const epaMs = EPA_MILESTONES[epa];
+    if (epaMs) {
+      const rd = LOOKUP[epa]?.[rating] || {};
+      colMilestones.forEach(ms => {
+        if (epaMs.includes(ms)) {
+          msScores[ms] = rd[ms] ?? "";
+          if (rd[ms]) usedScores.add(rd[ms]);
+        } else {
+          msScores[ms] = null; // not applicable
+        }
+      });
+      matched++;
+    } else {
+      colMilestones.forEach(ms => { msScores[ms] = null; });
+      unmatched++;
+    }
+    return { ...row, _msScores: msScores, _epa: epa, _rating: rating, _matched: !!epaMs };
+  });
+
+  // Stats
+  uploadStats.innerHTML = `<strong>${matched}</strong> rows matched · <strong>${unmatched}</strong> unmatched`;
+
+  // Build table — show all original columns + milestone columns
+  const visibleOrigCols = csvHeaders; // show all; user can decide what to keep in download
+  let html = "<thead>";
+
+  // Group header row
+  html += "<tr>";
+  visibleOrigCols.forEach(h => { html += `<th rowspan="2">${h}</th>`; });
+  MS_GROUPS.forEach(g => {
+    const cols = g.members.filter(ms => colMilestones.includes(ms));
+    if (cols.length) html += `<th class="ms-group-header" colspan="${cols.length}">${g.label}</th>`;
+  });
+  html += "</tr>";
+
+  // Milestone name row
+  html += "<tr>";
+  colMilestones.forEach(ms => { html += `<th class="ms-col">${ms}</th>`; });
+  html += "</tr></thead><tbody>";
+
+  enrichedRows.forEach(row => {
+    html += "<tr>";
+    visibleOrigCols.forEach(h => {
+      const val = row[h] ?? "";
+      const isEpaCol    = h === epaCol;
+      const isRatingCol = h === ratingCol;
+      const noMatch     = isEpaCol && !row._matched;
+      html += `<td${noMatch ? " class='no-match'" : ""}>${escHtml(val)}</td>`;
+    });
+    colMilestones.forEach(ms => {
+      const s = row._msScores[ms];
+      if (s === null)     { html += `<td class="empty-ms">—</td>`; }
+      else if (s === "")  { html += `<td class="empty-ms">?</td>`; }
+      else                { html += `<td class="ms-score-cell" style="background:${scoreColor(s)}">${s}</td>`; }
+    });
+    html += "</tr>";
+  });
+
+  uploadTable.innerHTML = html + "</tbody>";
+  buildLegend(uploadLegend, usedScores);
+  uploadResultsCard.style.display = "block";
+  uploadResultsCard.scrollIntoView({behavior:"smooth", block:"start"});
+
+  // Store for download
+  uploadTable._colMilestones = colMilestones;
+  uploadTable._origCols      = visibleOrigCols;
+});
+
+function escHtml(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// Download enriched CSV
+downloadCsvBtn.addEventListener("click", () => {
+  const colMilestones = uploadTable._colMilestones || [];
+  const origCols      = uploadTable._origCols || csvHeaders;
+  const allCols       = [...origCols, ...colMilestones];
+
+  const escape = v => {
+    const s = String(v ?? "");
+    return (s.includes(",") || s.includes('"') || s.includes("\n")) ? `"${s.replace(/"/g,'""')}"` : s;
+  };
+
+  const lines = [allCols.map(escape).join(",")];
+  enrichedRows.forEach(row => {
+    const vals = [
+      ...origCols.map(h => escape(row[h] ?? "")),
+      ...colMilestones.map(ms => {
+        const s = row._msScores[ms];
+        return s === null ? escape("") : escape(s);
+      })
+    ];
+    lines.push(vals.join(","));
+  });
+
+  const blob = new Blob([lines.join("\n")], {type:"text/csv"});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url; a.download = "epa_milestone_enriched.csv";
+  a.click(); URL.revokeObjectURL(url);
+});
 </script>
 </body>
 </html>
