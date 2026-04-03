@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EPA → Milestone Rating Lookup | SIMPL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* SIMPL Brand Colors */
+      --teal:         #6ABBCC;
+      --queen-blue:   #4C6085;
+      --black-olive:  #32322C;
+      --snow:         #F9F4F5;
+      --grey:         #8E8D92;
+      --light-teal:   #EAF5F8;
+      --light-grey:   #C8D0D8;
+      --white:        #FFFFFF;
+
+      /* Score colors */
+      --c-lt1: #7f8c8d;
+      --c-1:   #c0392b;
+      --c-15:  #e06c1a;
+      --c-2:   #e8a010;
+      --c-25:  #c9b800;
+      --c-3:   #6aab25;
+      --c-35:  #3d9e3d;
+      --c-4:   #1e8a4a;
+      --c-5:   #0a6e36;
+    }
+
+    body {
+      font-family: "Roboto", "Segoe UI", system-ui, sans-serif;
+      background: var(--snow);
+      color: var(--black-olive);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 3px solid var(--teal);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    /* Logo placeholder — replaced once PNG is embedded */
+    .simpl-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .simpl-logo-wrap img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+    /* Text fallback shown only if image fails */
+    .simpl-wordmark {
+      font-family: Arial, sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--queen-blue);
+      text-transform: uppercase;
+    }
+    .header-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--light-grey);
+    }
+    .header-title-wrap h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--queen-blue);
+      letter-spacing: .01em;
+    }
+    .header-title-wrap p {
+      font-size: .78rem;
+      color: var(--grey);
+      margin-top: 2px;
+    }
+
+    /* ── TABS ── */
+    .tab-bar {
+      background: var(--queen-blue);
+      display: flex;
+      padding: 0 32px;
+      gap: 4px;
+    }
+    .tab-btn {
+      padding: 12px 22px;
+      font-family: "Roboto", sans-serif;
+      font-size: .88rem; font-weight: 600;
+      color: rgba(255,255,255,.6);
+      cursor: pointer; border: none; background: transparent;
+      border-bottom: 3px solid transparent;
+      transition: all .15s;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,.9); }
+    .tab-btn.active { color: #fff; border-bottom-color: var(--teal); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+    .tab-panel { display: none; flex-direction: column; gap: 24px; }
+    .tab-panel.active { display: flex; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--light-grey);
+      border-radius: 8px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(50,50,44,.07);
+    }
+    .card-title {
+      font-family: Arial, sans-serif;
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+
+    /* ── STEP BADGE ── */
+    .step-label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .step-badge {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--teal); color: #fff;
+      font-size: .8rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-label span { font-weight: 600; color: var(--black-olive); }
+
+    /* ── SELECT ── */
+    select {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--light-grey); border-radius: 6px;
+      font-family: "Roboto", sans-serif; font-size: .92rem;
+      color: var(--black-olive); background: var(--white);
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238E8D92' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      transition: border-color .15s;
+    }
+    select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(106,187,204,.2); }
+
+    /* ── RATING PILLS ── */
+    .rating-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 10px; margin-top: 6px;
+    }
+    .rating-pill {
+      border: 2px solid var(--light-grey); border-radius: 6px;
+      padding: 12px 14px; cursor: pointer; font-size: .87rem;
+      color: var(--grey); transition: all .15s;
+      background: var(--snow); text-align: center; user-select: none;
+    }
+    .rating-pill:hover { border-color: var(--teal); color: var(--queen-blue); background: var(--light-teal); }
+    .rating-pill.selected {
+      border-color: var(--teal); background: var(--teal);
+      color: #fff; font-weight: 600;
+    }
+    .rating-pill .emoji { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+
+    /* ── MILESTONE RESULT CARDS ── */
+    .milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+    }
+    .milestone-card {
+      border-radius: 6px; padding: 16px 10px;
+      text-align: center; border: 1.5px solid transparent;
+    }
+    .milestone-card .ms-name {
+      font-family: Arial, sans-serif;
+      font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 6px; color: rgba(255,255,255,.9);
+    }
+    .milestone-card .ms-score { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; }
+    .milestone-card .ms-label { font-size: .68rem; color: rgba(255,255,255,.8); margin-top: 4px; }
+
+    /* ── HEAT MAP ── */
+    .heatmap-wrap { overflow-x: auto; }
+    table.heatmap { border-collapse: collapse; width: 100%; font-size: .82rem; min-width: 500px; }
+    table.heatmap th {
+      background: var(--queen-blue); color: #fff;
+      padding: 9px 12px; text-align: center; white-space: nowrap; font-weight: 600;
+    }
+    table.heatmap th.row-header { text-align: left; min-width: 220px; }
+    table.heatmap tr.active-row td { outline: 3px solid var(--teal); outline-offset: -2px; }
+    table.heatmap td {
+      padding: 9px 12px; border: 1px solid var(--light-grey);
+      text-align: center; font-weight: 700; color: #fff; transition: opacity .1s;
+    }
+    table.heatmap td.row-label {
+      background: var(--light-teal); color: var(--black-olive);
+      font-weight: 500; text-align: left; font-size: .8rem; border-left: none;
+    }
+    table.heatmap tr:nth-child(even) td.row-label { background: var(--white); }
+    table.heatmap td.empty { background: #eef0f3; color: #aab; font-weight: 400; font-size: .75rem; }
+    table.heatmap tr:hover td { opacity: .88; }
+    table.heatmap tr.active-row td { opacity: 1 !important; }
+
+    /* ── LEGEND ── */
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; align-items: center; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: .75rem; color: var(--grey); }
+    .legend-swatch { width: 18px; height: 18px; border-radius: 3px; flex-shrink: 0; }
+
+    /* ── PLACEHOLDER ── */
+    .placeholder { text-align: center; padding: 32px; color: var(--grey); font-size: .9rem; }
+    .placeholder .icon { font-size: 2.5rem; margin-bottom: 8px; }
+
+    /* ── TEAL RULE (decorative section divider) ── */
+    .teal-rule {
+      height: 2px; background: var(--teal);
+      border: none; margin: 0 0 16px;
+    }
+
+    /* ════ BATCH ENTRY ════ */
+    .batch-intro { font-size: .87rem; color: var(--grey); margin-bottom: 18px; line-height: 1.6; }
+
+    .batch-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    .batch-controls input[type=text] {
+      flex: 1; min-width: 180px; padding: 9px 13px;
+      border: 1.5px solid var(--light-grey); border-radius: 6px;
+      font-family: "Roboto", sans-serif; font-size: .88rem; color: var(--black-olive);
+      background: var(--white);
+    }
+    .batch-controls input[type=text]:focus { outline: none; border-color: var(--teal); }
+
+    .btn {
+      padding: 9px 18px; border-radius: 6px; border: none;
+      font-family: "Roboto", sans-serif; font-size: .88rem; font-weight: 600;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-primary:hover { background: #58a8b9; }
+    .btn-secondary { background: var(--light-teal); color: var(--queen-blue); border: 1px solid var(--light-grey); }
+    .btn-secondary:hover { background: #d4edf2; }
+
+    /* EPA list rows */
+    .epa-list { display: flex; flex-direction: column; }
+    .epa-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px; border-bottom: 1px solid var(--light-grey);
+      transition: background .1s;
+    }
+    .epa-row:last-child { border-bottom: none; }
+    .epa-row:nth-child(even) { background: var(--light-teal); }
+    .epa-row:hover { background: #d4edf2; }
+    .epa-row.hidden { display: none; }
+
+    .epa-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--light-teal); color: var(--queen-blue);
+      font-size: .75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      border: 1px solid var(--light-grey);
+    }
+    .epa-name { flex: 1; font-size: .87rem; color: var(--black-olive); line-height: 1.35; }
+
+    .epa-rating-select {
+      width: auto; min-width: 230px; padding: 7px 32px 7px 10px;
+      border: 1.5px solid var(--light-grey); border-radius: 6px;
+      font-family: "Roboto", sans-serif; font-size: .82rem;
+      color: var(--black-olive); background: var(--white);
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238E8D92' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      transition: border-color .15s;
+    }
+    .epa-rating-select.set {
+      border-color: var(--teal); background-color: var(--light-teal); font-weight: 600;
+    }
+    .epa-rating-select:focus { outline: none; border-color: var(--teal); }
+
+    /* Generate bar */
+    .generate-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; padding: 16px 0 0;
+      border-top: 1px solid var(--light-grey); margin-top: 8px;
+    }
+    .count-msg { font-size: .85rem; color: var(--grey); }
+    .count-msg strong { color: var(--queen-blue); }
+
+    /* Batch results table */
+    table.batch-table {
+      border-collapse: collapse; width: 100%; font-size: .8rem; min-width: 600px;
+    }
+    table.batch-table th {
+      background: var(--queen-blue); color: #fff;
+      padding: 9px 10px; text-align: center; white-space: nowrap; font-weight: 600;
+    }
+    table.batch-table th.epa-col   { text-align: left; min-width: 220px; }
+    table.batch-table th.rating-col { background: #3d4f70; min-width: 160px; }
+    table.batch-table th.ms-group  {
+      background: var(--teal); font-family: Arial, sans-serif;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px;
+    }
+    table.batch-table td {
+      padding: 8px 10px; border: 1px solid var(--light-grey);
+      text-align: center; font-weight: 700; color: #fff;
+    }
+    table.batch-table td.epa-cell {
+      background: var(--white); color: var(--black-olive);
+      font-weight: 500; text-align: left; font-size: .8rem;
+    }
+    table.batch-table tr:nth-child(even) td.epa-cell { background: var(--light-teal); }
+    table.batch-table td.rating-cell {
+      background: var(--light-teal); color: var(--queen-blue);
+      font-weight: 600; font-size: .78rem; line-height: 1.3;
+    }
+    table.batch-table tr:nth-child(even) td.rating-cell { background: #d4edf2; }
+    table.batch-table td.empty-cell {
+      background: #f0f2f4; color: #bbb; font-weight: 400; font-size: .72rem;
+    }
+    table.batch-table tr:hover td { opacity: .88; }
+    table.batch-table tr:hover td.epa-cell,
+    table.batch-table tr:hover td.rating-cell { opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: .75rem;
+      color: var(--grey);
+      border-top: 1px solid var(--light-grey);
+      background: var(--white);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 14px 16px; }
+      .card  { padding: 18px 16px; }
+      main   { padding: 18px 12px 40px; }
+      .tab-bar { padding: 0 12px; }
+      .epa-rating-select { min-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-left">
+    <div class="simpl-logo-wrap">
+      <!-- Logo will be swapped to <img> once PNG is embedded -->
+      <span class="simpl-wordmark" id="simpl-logo-text">SIMPL</span>
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-title-wrap">
+      <h1>EPA → Milestone Rating Lookup</h1>
+      <p>Emergency Medicine · Residency Assessment Tool</p>
+    </div>
+  </div>
+</header>
+
+<!-- ── TABS ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="quick">🔍 Quick Lookup</button>
+  <button class="tab-btn"        data-tab="batch">📋 Batch Entry</button>
+</div>
+
+<main>
+
+  <!-- ══ TAB 1: QUICK LOOKUP ══ -->
+  <div class="tab-panel active" id="tab-quick">
+
+    <div class="card">
+      <div class="step-label">
+        <div class="step-badge">1</div>
+        <span>Select an Entrustable Professional Activity (EPA)</span>
+      </div>
+      <select id="epa-select">
+        <option value="">— Choose an EPA —</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div class="step-label">
+        <div class="step-badge">2</div>
+        <span>Select the Supervisor Rating</span>
+      </div>
+      <div class="rating-grid" id="rating-grid"></div>
+    </div>
+
+    <div id="quick-results" style="display:none; flex-direction:column; gap:24px;">
+      <div class="card">
+        <div class="card-title">Suggested Milestone Ratings</div>
+        <hr class="teal-rule" />
+        <div id="milestone-cards" class="milestone-grid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Full Rating Map for Selected EPA</div>
+        <hr class="teal-rule" />
+        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">
+          The highlighted row shows your selected rating. All milestone scores are shown for reference.
+        </p>
+        <div class="heatmap-wrap">
+          <table class="heatmap" id="heatmap"></table>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+
+    <div id="quick-placeholder" class="card">
+      <div class="placeholder">
+        <div class="icon">🔍</div>
+        <div>Select an EPA and rating above to see suggested Milestone ratings and the full heat map.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ TAB 2: BATCH ENTRY ══ -->
+  <div class="tab-panel" id="tab-batch">
+
+    <div class="card">
+      <div class="card-title">Batch Entry</div>
+      <hr class="teal-rule" />
+      <p class="batch-intro">
+        Assign a supervisor rating to as many EPAs as needed, then click <strong>Generate Summary</strong> to see all suggested Milestone ratings side by side in one table.
+      </p>
+
+      <div class="batch-controls">
+        <input type="text" id="epa-search" placeholder="🔎  Filter EPAs by keyword…" />
+        <button class="btn btn-secondary" id="clear-all-btn">Clear All Ratings</button>
+      </div>
+
+      <div class="epa-list" id="epa-list"></div>
+
+      <div class="generate-bar">
+        <div class="count-msg" id="count-msg">No ratings selected yet.</div>
+        <button class="btn btn-primary" id="generate-btn">Generate Summary →</button>
+      </div>
+    </div>
+
+    <div id="batch-results" style="display:none;">
+      <div class="card">
+        <div class="card-title">Milestone Rating Summary</div>
+        <hr class="teal-rule" />
+        <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">
+          Suggested ratings for each EPA × Milestone combination. Cells showing — indicate that milestone is not mapped to that EPA.
+        </p>
+        <div class="heatmap-wrap">
+          <table class="batch-table" id="batch-table"></table>
+        </div>
+        <div class="legend" id="batch-legend"></div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  © SIMPL — Society for Improving Medical Professional Learning &nbsp;·&nbsp; <a href="https://simpl.org" style="color:var(--teal);text-decoration:none;">simpl.org</a>
+</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+const RATINGS = [
+  { label: "I had to do it",                        emoji: "🔴" },
+  { label: "I helped a lot",                        emoji: "🟠" },
+  { label: "I helped a little",                     emoji: "🟡" },
+  { label: "I needed to be there but did not help", emoji: "🟢" },
+  { label: "I didn't need to be there at all",      emoji: "⭐" },
+];
+
+const EPA_MILESTONES = {"Initiate treatment for a patient requiring emergent/immediate intervention": ["PC1", "PC2", "PC5", "MK2", "ICS2"], "Lead the resuscitation of a critically ill or injured patient": ["PC1", "PC2", "PC3", "PC4", "PC5", "PC6", "MK1", "MK2", "ICS1", "ICS2"], "Obtain and interpret a focused history using data from all necessary sources": ["PC2", "MK1", "ICS1"], "Perform and interpret a focused physical examination": ["PC2", "PC4", "MK1"], "Create and prioritize a differential diagnosis": ["PC2", "PC3", "PC4", "MK1", "MK2"], "Order and interpret diagnostic tests": ["PC3", "PC4", "MK1", "MK2", "PBL1"], "Apply best available evidence to guide patient care": ["MK1", "MK2", "PBL1"], "Manage clinical or diagnostic uncertainty when caring for patients": ["PC3", "PC4", "PC6", "MK1", "MK2", "PBL1", "ICS1"], "Utilize observation and reassessment to guide decision-making": ["PC2", "PC6", "MK2"], "Develop and implement an appropriate disposition and aftercare plan": ["PC6", "MK2", "SBP4", "ICS1"], "Perform the diagnostic and therapeutic procedures of an emergency physician": ["PC2", "PC8", "MK2", "ICS1", "ICS2"], "Provide invasive and non-invasive airway management": ["PC1", "PC5", "PC8", "MK1", "MK2"], "Perform and interpret point-of-care ultrasound": ["PC3", "PC8"], "Perform procedure sedation": ["PC2", "PC5", "PC6", "PC8", "MK1", "MK2", "ICS1", "ICS2"], "Implement pharmacologic and therapeutic management plans": ["PC5", "MK1", "MK2"], "Provide palliative and end-of-life care for patients and their families": ["PC5", "PC6", "MK2", "SBP3", "ICS1", "ICS2", "PROF1"], "Document the emergency department encounter": ["PROF2", "ICS3", "SBP4"], "Communicate with other healthcare professionals about patient care": ["SBP3", "SBP4", "PROF1", "PROF2", "ICS2", "ICS3"], "Communicate with the patient, family, and caregivers": ["ICS1", "PROF1", "PROF2"], "Provide supervision or consultation for other healthcare professionals": ["MK2", "SBP1", "SBP4", "ICS2", "ICS3"], "Manage the emergency department flow to optimize patient care": ["PC6", "PC7", "SBP3", "SBP4", "ICS2", "ICS3", "PROF2"], "Fulfill professional obligations and adhere to professional standards": ["PBL2", "PROF1", "PROF2", "PROF3"]};
+
+const LOOKUP = {"Initiate treatment for a patient requiring emergent/immediate intervention": {"I had to do it": {"PC1": "1", "PC2": "1", "PC5": "1", "MK2": "1", "ICS2": "1"}, "I helped a lot": {"PC1": "1", "PC2": "1", "PC5": "1", "MK2": "1", "ICS2": "1.5"}, "I helped a little": {"PC1": "1.5", "PC2": "2", "PC5": "1.5", "MK2": "1.5", "ICS2": "2"}, "I needed to be there but did not help": {"PC1": "1.5", "PC2": "2", "PC5": "2", "MK2": "1.5", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC1": "2", "PC2": "3", "PC5": "2.5", "MK2": "2", "ICS2": "3"}}, "Lead the resuscitation of a critically ill or injured patient": {"I had to do it": {"PC1": "1", "PC2": "1", "PC3": "1", "PC4": "1", "PC5": "1", "PC6": "1", "MK1": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC1": "2", "PC2": "1", "PC3": "1.5", "PC4": "1", "PC5": "1.5", "PC6": "1.5", "MK1": "1", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC1": "3", "PC2": "2", "PC3": "2", "PC4": "2", "PC5": "2", "PC6": "2", "MK1": "2", "MK2": "2", "ICS1": "2", "ICS2": "2"}, "I needed to be there but did not help": {"PC1": "4", "PC2": "3", "PC3": "2.5", "PC4": "3", "PC5": "3", "PC6": "3", "MK1": "3", "MK2": "3", "ICS1": "3", "ICS2": "3"}, "I didn't need to be there at all": {"PC1": "5", "PC2": "4", "PC3": "3", "PC4": "4", "PC5": "4", "PC6": "4", "MK1": "4", "MK2": "4", "ICS1": "4", "ICS2": "4"}}, "Obtain and interpret a focused history using data from all necessary sources": {"I had to do it": {"PC2": "1", "MK1": "1", "ICS1": "1"}, "I helped a lot": {"PC2": "1", "MK1": "1", "ICS1": "1.5"}, "I helped a little": {"PC2": "2", "MK1": "2", "ICS1": "2"}, "I needed to be there but did not help": {"PC2": "3", "MK1": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC2": "4", "MK1": "4", "ICS1": "3.5"}}, "Perform and interpret a focused physical examination": {"I had to do it": {"PC2": "1", "PC4": "1", "MK1": "1"}, "I helped a lot": {"PC2": "1", "PC4": "1", "MK1": "1"}, "I helped a little": {"PC2": "2", "PC4": "2", "MK1": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC4": "3", "MK1": "3"}, "I didn't need to be there at all": {"PC2": "4", "PC4": "4", "MK1": "4"}}, "Create and prioritize a differential diagnosis": {"I had to do it": {"PC2": "1", "PC3": "1", "PC4": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC2": "1", "PC3": "1.5", "PC4": "1", "MK1": "1", "MK2": "1"}, "I helped a little": {"PC2": "2", "PC3": "2", "PC4": "1", "MK1": "2", "MK2": "1.5"}, "I needed to be there but did not help": {"PC2": "3", "PC3": "2.5", "PC4": "1", "MK1": "3", "MK2": "1.5"}, "I didn't need to be there at all": {"PC2": "4", "PC3": "3", "PC4": "2", "MK1": "4", "MK2": "2"}}, "Order and interpret diagnostic tests": {"I had to do it": {"PC3": "1", "PC4": "1", "MK1": "1", "MK2": "1", "PBL1": "1"}, "I helped a lot": {"PC3": "2", "PC4": "1", "MK1": "1", "MK2": "1.5", "PBL1": "1"}, "I helped a little": {"PC3": "3", "PC4": "2", "MK1": "2", "MK2": "2", "PBL1": "2"}, "I needed to be there but did not help": {"PC3": "4", "PC4": "3", "MK1": "3", "MK2": "3", "PBL1": "2"}, "I didn't need to be there at all": {"PC3": "5", "PC4": "4", "MK1": "4", "MK2": "4", "PBL1": "3"}}, "Apply best available evidence to guide patient care": {"I had to do it": {"MK1": "1", "MK2": "1", "PBL1": "1"}, "I helped a lot": {"MK1": "2", "MK2": "1.5", "PBL1": "1"}, "I helped a little": {"MK1": "3", "MK2": "2", "PBL1": "2"}, "I needed to be there but did not help": {"MK1": "4", "MK2": "3", "PBL1": "3"}, "I didn't need to be there at all": {"MK1": "5", "MK2": "4", "PBL1": "4"}}, "Manage clinical or diagnostic uncertainty when caring for patients": {"I had to do it": {"PC3": "1", "PC4": "1", "PC6": "1", "MK1": "1", "MK2": "1", "PBL1": "1", "ICS1": "1"}, "I helped a lot": {"PC3": "1.5", "PC4": "1", "PC6": "1.5", "MK1": "1", "MK2": "1.5", "PBL1": "1", "ICS1": "1.5"}, "I helped a little": {"PC3": "2", "PC4": "2", "PC6": "2", "MK1": "2", "MK2": "2", "PBL1": "2", "ICS1": "2"}, "I needed to be there but did not help": {"PC3": "2.5", "PC4": "3", "PC6": "3", "MK1": "3", "MK2": "3", "PBL1": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC3": "3", "PC4": "4", "PC6": "4", "MK1": "4", "MK2": "4", "PBL1": "4", "ICS1": "4"}}, "Utilize observation and reassessment to guide decision-making": {"I had to do it": {"PC2": "1", "PC6": "1", "MK2": "1"}, "I helped a lot": {"PC2": "1", "PC6": "1.5", "MK2": "1.5"}, "I helped a little": {"PC2": "2", "PC6": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC6": "3", "MK2": "3"}, "I didn't need to be there at all": {"PC2": "4", "PC6": "4", "MK2": "4"}}, "Develop and implement an appropriate disposition and aftercare plan": {"I had to do it": {"PC6": "1", "MK2": "1", "SBP4": "1", "ICS1": "1"}, "I helped a lot": {"PC6": "1.5", "MK2": "1.5", "SBP4": "2", "ICS1": "1.5"}, "I helped a little": {"PC6": "2", "MK2": "2", "SBP4": "2.5", "ICS1": "2"}, "I needed to be there but did not help": {"PC6": "3", "MK2": "3", "SBP4": "3", "ICS1": "3"}, "I didn't need to be there at all": {"PC6": "4", "MK2": "4", "SBP4": "3.5", "ICS1": "4"}}, "Perform the diagnostic and therapeutic procedures of an emergency physician": {"I had to do it": {"PC2": "1", "PC8": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC2": "1", "PC8": "1.5", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC2": "2", "PC8": "2", "MK2": "2", "ICS1": "2.5", "ICS2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC8": "3", "MK2": "3", "ICS1": "3", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC2": "4", "PC8": "4", "MK2": "4", "ICS1": "3.5", "ICS2": "3"}}, "Provide invasive and non-invasive airway management": {"I had to do it": {"PC1": "1", "PC5": "1", "PC8": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC1": "1", "PC5": "1.5", "PC8": "1.5", "MK1": "1", "MK2": "1.5"}, "I helped a little": {"PC1": "1.5", "PC5": "2", "PC8": "2", "MK1": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC1": "1.5", "PC5": "2.5", "PC8": "3", "MK1": "2", "MK2": "3"}, "I didn't need to be there at all": {"PC1": "2", "PC5": "3", "PC8": "4", "MK1": "3", "MK2": "4"}}, "Perform and interpret point-of-care ultrasound": {"I had to do it": {"PC3": "1", "PC8": "1"}, "I helped a lot": {"PC3": "1", "PC8": "1"}, "I helped a little": {"PC3": "1.5", "PC8": "1"}, "I needed to be there but did not help": {"PC3": "2", "PC8": "1"}, "I didn't need to be there at all": {"PC3": "2.5", "PC8": "1.5"}}, "Perform procedure sedation": {"I had to do it": {"PC2": "1", "PC5": "1", "PC6": "1", "PC8": "1", "MK1": "1", "MK2": "1", "ICS1": "1", "ICS2": "1"}, "I helped a lot": {"PC2": "1", "PC5": "1", "PC6": "1.5", "PC8": "1.5", "MK1": "1", "MK2": "1.5", "ICS1": "1.5", "ICS2": "1.5"}, "I helped a little": {"PC2": "2", "PC5": "2", "PC6": "2", "PC8": "2", "MK1": "2", "MK2": "2", "ICS1": "2", "ICS2": "2"}, "I needed to be there but did not help": {"PC2": "3", "PC5": "3", "PC6": "3", "PC8": "3", "MK1": "2", "MK2": "2.5", "ICS1": "3", "ICS2": "2.5"}, "I didn't need to be there at all": {"PC2": "4", "PC5": "4", "PC6": "4", "PC8": "4", "MK1": "3", "MK2": "3.5", "ICS1": "4", "ICS2": "3"}}, "Implement pharmacologic and therapeutic management plans": {"I had to do it": {"PC5": "1", "MK1": "1", "MK2": "1"}, "I helped a lot": {"PC5": "1.5", "MK1": "1", "MK2": "1.5"}, "I helped a little": {"PC5": "2", "MK1": "2", "MK2": "2"}, "I needed to be there but did not help": {"PC5": "3", "MK1": "3", "MK2": "3"}, "I didn't need to be there at all": {"PC5": "4", "MK1": "4", "MK2": "4"}}, "Provide palliative and end-of-life care for patients and their families": {"I had to do it": {"PC5": "1", "PC6": "1", "MK2": "1", "SBP3": "1", "ICS1": "1", "ICS2": "1", "PROF1": "1"}, "I helped a lot": {"PC5": "1.5", "PC6": "1.5", "MK2": "1.5", "SBP3": "1.5", "ICS1": "1.5", "ICS2": "1.5", "PROF1": "1.5"}, "I helped a little": {"PC5": "2", "PC6": "2", "MK2": "2", "SBP3": "2", "ICS1": "2", "ICS2": "2", "PROF1": "2"}, "I needed to be there but did not help": {"PC5": "2.5", "PC6": "3", "MK2": "3", "SBP3": "2.5", "ICS1": "3", "ICS2": "2.5", "PROF1": "2.5"}, "I didn't need to be there at all": {"PC5": "3", "PC6": "4", "MK2": "4", "SBP3": "3", "ICS1": "4", "ICS2": "3", "PROF1": "3"}}, "Document the emergency department encounter": {"I had to do it": {"PROF2": "1", "ICS3": "1", "SBP4": "1"}, "I helped a lot": {"PROF2": "1.5", "ICS3": "1.5", "SBP4": "1.5"}, "I helped a little": {"PROF2": "2", "ICS3": "2", "SBP4": "1.5"}, "I needed to be there but did not help": {"PROF2": "2.5", "ICS3": "2.5", "SBP4": "2"}, "I didn't need to be there at all": {"PROF2": "3", "ICS3": "3.5", "SBP4": "2.5"}}, "Communicate with other healthcare professionals about patient care": {"I had to do it": {"SBP3": "1", "SBP4": "1", "PROF1": "1", "PROF2": "1", "ICS2": "1", "ICS3": "1"}, "I helped a lot": {"SBP3": "1.5", "SBP4": "1.5", "PROF1": "1.5", "PROF2": "1.5", "ICS2": "1.5", "ICS3": "1.5"}, "I helped a little": {"SBP3": "2", "SBP4": "2", "PROF1": "2", "PROF2": "2", "ICS2": "2", "ICS3": "2"}, "I needed to be there but did not help": {"SBP3": "2.5", "SBP4": "3", "PROF1": "2.5", "PROF2": "2.5", "ICS2": "3", "ICS3": "3"}, "I didn't need to be there at all": {"SBP3": "3", "SBP4": "4", "PROF1": "3", "PROF2": "3", "ICS2": "4", "ICS3": "4"}}, "Communicate with the patient, family, and caregivers": {"I had to do it": {"ICS1": "1", "PROF1": "1", "PROF2": "1"}, "I helped a lot": {"ICS1": "1.5", "PROF1": "1.5", "PROF2": "1.5"}, "I helped a little": {"ICS1": "2", "PROF1": "2", "PROF2": "2"}, "I needed to be there but did not help": {"ICS1": "3", "PROF1": "2.5", "PROF2": "2.5"}, "I didn't need to be there at all": {"ICS1": "4", "PROF1": "3", "PROF2": "3"}}, "Provide supervision or consultation for other healthcare professionals": {"I had to do it": {"MK2": "1", "SBP1": "<1", "SBP4": "1", "ICS2": "1", "ICS3": "1"}, "I helped a lot": {"MK2": "1.5", "SBP1": "<1", "SBP4": "1.5", "ICS2": "1.5", "ICS3": "1.5"}, "I helped a little": {"MK2": "2", "SBP1": "<1", "SBP4": "2", "ICS2": "2", "ICS3": "2"}, "I needed to be there but did not help": {"MK2": "3", "SBP1": "<1", "SBP4": "2.5", "ICS2": "3", "ICS3": "3"}, "I didn't need to be there at all": {"MK2": "4", "SBP1": "1", "SBP4": "3", "ICS2": "4", "ICS3": "4"}}, "Manage the emergency department flow to optimize patient care": {"I had to do it": {"PC6": "1", "PC7": "1", "SBP3": "1", "SBP4": "1", "ICS2": "1", "ICS3": "1", "PROF2": "1"}, "I helped a lot": {"PC6": "1.5", "PC7": "2", "SBP3": "1.5", "SBP4": "2", "ICS2": "1.5", "ICS3": "1.5", "PROF2": "1.5"}, "I helped a little": {"PC6": "2", "PC7": "3", "SBP3": "2", "SBP4": "2.5", "ICS2": "2", "ICS3": "2", "PROF2": "2"}, "I needed to be there but did not help": {"PC6": "3", "PC7": "4", "SBP3": "2.5", "SBP4": "3", "ICS2": "3", "ICS3": "3", "PROF2": "3"}, "I didn't need to be there at all": {"PC6": "4", "PC7": "5", "SBP3": "3", "SBP4": "3.5", "ICS2": "4", "ICS3": "4", "PROF2": "4"}}, "Fulfill professional obligations and adhere to professional standards": {"I had to do it": {"PBL2": "1", "PROF1": "1", "PROF2": "1", "PROF3": "1"}, "I helped a lot": {"PBL2": "1.5", "PROF1": "1.5", "PROF2": "1.5", "PROF3": "1"}, "I helped a little": {"PBL2": "2", "PROF1": "2", "PROF2": "2", "PROF3": "2"}, "I needed to be there but did not help": {"PBL2": "2.5", "PROF1": "2.5", "PROF2": "3", "PROF3": "3"}, "I didn't need to be there at all": {"PBL2": "3", "PROF1": "3", "PROF2": "4", "PROF3": "4"}}};
+
+const SCORE_COLORS = {
+  "<1":"#7f8c8d","1":"#c0392b","1.5":"#e06c1a",
+  "2":"#e8a010","2.5":"#c9b800","3":"#6aab25",
+  "3.5":"#3d9e3d","4":"#1e8a4a","5":"#0a6e36"
+};
+const SCORE_LABELS = {
+  "<1":"Below 1","1":"Level 1","1.5":"Level 1–2","2":"Level 2",
+  "2.5":"Level 2–3","3":"Level 3","3.5":"Level 3–4","4":"Level 4","5":"Level 5"
+};
+
+const MS_GROUPS = [
+  { label:"PC",   members:["PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8"] },
+  { label:"MK",   members:["MK1","MK2"] },
+  { label:"PBL",  members:["PBL1","PBL2"] },
+  { label:"ICS",  members:["ICS1","ICS2","ICS3"] },
+  { label:"SBP",  members:["SBP1","SBP3","SBP4"] },
+  { label:"PROF", members:["PROF1","PROF2","PROF3"] },
+];
+const ALL_MS_ORDERED = MS_GROUPS.flatMap(g => g.members);
+
+function scoreColor(s) { return SCORE_COLORS[s] || "#bbb"; }
+
+function buildLegend(el, usedScores) {
+  el.innerHTML = `<span style="font-size:.75rem;color:var(--grey);font-weight:600;margin-right:4px;">Scale:</span>`;
+  ["<1","1","1.5","2","2.5","3","3.5","4","5"].forEach(s => {
+    if (!usedScores.has(s)) return;
+    el.innerHTML += `<div class="legend-item"><div class="legend-swatch" style="background:${scoreColor(s)}"></div><span>${s==="<1"?"&lt;1":s}</span></div>`;
+  });
+}
+
+// ─── TABS ──────────────────────────────────────────────────────────────────
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ═══ QUICK LOOKUP ══════════════════════════════════════════════════════════
+const epaSelect        = document.getElementById("epa-select");
+const ratingGrid       = document.getElementById("rating-grid");
+const quickResults     = document.getElementById("quick-results");
+const quickPlaceholder = document.getElementById("quick-placeholder");
+const msCards          = document.getElementById("milestone-cards");
+const heatmapEl        = document.getElementById("heatmap");
+const legendEl         = document.getElementById("legend");
+
+let selectedEPA = null, selectedRating = null;
+
+Object.keys(LOOKUP).forEach(epa => {
+  const opt = document.createElement("option");
+  opt.value = epa; opt.textContent = epa;
+  epaSelect.appendChild(opt);
+});
+
+RATINGS.forEach(r => {
+  const pill = document.createElement("div");
+  pill.className = "rating-pill";
+  pill.dataset.rating = r.label;
+  pill.innerHTML = `<span class="emoji">${r.emoji}</span>${r.label}`;
+  pill.addEventListener("click", () => {
+    selectedRating = r.label;
+    document.querySelectorAll(".rating-pill").forEach(p => p.classList.toggle("selected", p.dataset.rating === r.label));
+    renderQuick();
+  });
+  ratingGrid.appendChild(pill);
+});
+
+epaSelect.addEventListener("change", () => {
+  selectedEPA = epaSelect.value || null;
+  selectedRating = null;
+  document.querySelectorAll(".rating-pill").forEach(p => p.classList.remove("selected"));
+  renderQuick();
+});
+
+function renderQuick() {
+  const ready = selectedEPA && selectedRating;
+  quickResults.style.display    = ready ? "flex" : "none";
+  quickResults.style.flexDirection = "column";
+  quickResults.style.gap = "24px";
+  quickPlaceholder.style.display = ready ? "none" : "block";
+  if (!ready) return;
+
+  const milestones = EPA_MILESTONES[selectedEPA] || [];
+  const ratingData = LOOKUP[selectedEPA]?.[selectedRating] || {};
+  const epaData    = LOOKUP[selectedEPA] || {};
+
+  msCards.innerHTML = "";
+  milestones.forEach(ms => {
+    const score = ratingData[ms] ?? "—";
+    const card  = document.createElement("div");
+    card.className = "milestone-card";
+    const bg = score !== "—" ? scoreColor(score) : "#bbb";
+    card.style.background = card.style.borderColor = bg;
+    card.innerHTML = `<div class="ms-name">${ms}</div><div class="ms-score">${score}</div><div class="ms-label">${SCORE_LABELS[score]??""}</div>`;
+    msCards.appendChild(card);
+  });
+
+  let html = "<thead><tr><th class='row-header'>Supervisor Rating</th>";
+  milestones.forEach(ms => { html += `<th>${ms}</th>`; });
+  html += "</tr></thead><tbody>";
+  RATINGS.forEach(r => {
+    const isActive = r.label === selectedRating;
+    const rd = epaData[r.label] || {};
+    html += `<tr${isActive?" class='active-row'":""}><td class="row-label">${r.emoji} ${r.label}</td>`;
+    milestones.forEach(ms => {
+      const s = rd[ms];
+      html += s!==undefined ? `<td style="background:${scoreColor(s)}">${s}</td>` : `<td class="empty">—</td>`;
+    });
+    html += "</tr>";
+  });
+  heatmapEl.innerHTML = html + "</tbody>";
+  buildLegend(legendEl, new Set(Object.values(epaData).flatMap(rd => Object.values(rd))));
+}
+
+// ═══ BATCH ENTRY ═══════════════════════════════════════════════════════════
+const epaListEl   = document.getElementById("epa-list");
+const epaSearch   = document.getElementById("epa-search");
+const clearAllBtn = document.getElementById("clear-all-btn");
+const generateBtn = document.getElementById("generate-btn");
+const countMsg    = document.getElementById("count-msg");
+const batchResults= document.getElementById("batch-results");
+const batchTable  = document.getElementById("batch-table");
+const batchLegend = document.getElementById("batch-legend");
+
+const ALL_EPAS = Object.keys(LOOKUP);
+const batchSelections = {};
+
+ALL_EPAS.forEach((epa, i) => {
+  const row = document.createElement("div");
+  row.className = "epa-row";
+  row.dataset.epa = epa;
+  row.innerHTML = `<div class="epa-num">${i+1}</div><div class="epa-name">${epa}</div>`;
+
+  const sel = document.createElement("select");
+  sel.className = "epa-rating-select";
+  sel.innerHTML = `<option value="">— No rating —</option>` +
+    RATINGS.map(r => `<option value="${r.label}">${r.emoji} ${r.label}</option>`).join("");
+
+  sel.addEventListener("change", () => {
+    if (sel.value) { batchSelections[epa] = sel.value; sel.classList.add("set"); }
+    else           { delete batchSelections[epa];      sel.classList.remove("set"); }
+    updateCount();
+  });
+
+  row.appendChild(sel);
+  epaListEl.appendChild(row);
+});
+
+function updateCount() {
+  const n = Object.keys(batchSelections).length;
+  countMsg.innerHTML = n===0 ? "No ratings selected yet."
+    : `<strong>${n}</strong> EPA${n!==1?"s":""} rated — ready to generate.`;
+}
+
+epaSearch.addEventListener("input", () => {
+  const q = epaSearch.value.toLowerCase();
+  document.querySelectorAll(".epa-row").forEach(row => {
+    row.classList.toggle("hidden", !row.dataset.epa.toLowerCase().includes(q));
+  });
+});
+
+clearAllBtn.addEventListener("click", () => {
+  document.querySelectorAll(".epa-rating-select").forEach(sel => { sel.value=""; sel.classList.remove("set"); });
+  Object.keys(batchSelections).forEach(k => delete batchSelections[k]);
+  updateCount();
+  batchResults.style.display = "none";
+});
+
+generateBtn.addEventListener("click", () => {
+  const entries = Object.entries(batchSelections);
+  if (!entries.length) { alert("Please assign a rating to at least one EPA."); return; }
+
+  const msSet = new Set();
+  entries.forEach(([epa]) => (EPA_MILESTONES[epa]||[]).forEach(ms => msSet.add(ms)));
+  const colMilestones = ALL_MS_ORDERED.filter(ms => msSet.has(ms));
+
+  let html = "<thead><tr><th class='epa-col' rowspan='2'>EPA</th><th class='rating-col' rowspan='2'>Rating</th>";
+  MS_GROUPS.forEach(g => {
+    const cols = g.members.filter(ms => colMilestones.includes(ms));
+    if (cols.length) html += `<th class="ms-group" colspan="${cols.length}">${g.label}</th>`;
+  });
+  html += "</tr><tr>";
+  colMilestones.forEach(ms => { html += `<th>${ms}</th>`; });
+  html += "</tr></thead><tbody>";
+
+  const usedScores = new Set();
+  entries.forEach(([epa, rating]) => {
+    const rd   = LOOKUP[epa]?.[rating] || {};
+    const rObj = RATINGS.find(r => r.label === rating);
+    html += `<tr><td class="epa-cell">${epa}</td><td class="rating-cell">${rObj?rObj.emoji:""} ${rating}</td>`;
+    colMilestones.forEach(ms => {
+      const epaMs = EPA_MILESTONES[epa] || [];
+      if (!epaMs.includes(ms)) { html += `<td class="empty-cell">—</td>`; }
+      else { const s=rd[ms]; usedScores.add(s); html += `<td style="background:${scoreColor(s)}">${s}</td>`; }
+    });
+    html += "</tr>";
+  });
+
+  batchTable.innerHTML = html + "</tbody>";
+  buildLegend(batchLegend, usedScores);
+  batchResults.style.display = "block";
+  batchResults.scrollIntoView({ behavior:"smooth", block:"start" });
+});
+
+updateCount();
+</script>
+</body>
+</html>
