@@ -253,7 +253,18 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
       margin: 18px 0;
     }
+    .col-map-grid.five-col { grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+    .col-map-grid.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
     .col-map-item label { display: block; font-size: .8rem; font-weight: 600; color: var(--queen-blue); margin-bottom: 6px; }
+    .col-map-item .col-hint { font-size: .73rem; color: var(--grey); margin-bottom: 5px; }
+
+    .format-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 20px; font-size: .82rem; font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .format-badge.format-original { background: #eaf0fb; color: var(--queen-blue); border: 1px solid #c0ccdf; }
+    .format-badge.format-enriched { background: #eaf5f0; color: #1e8a4a; border: 1px solid #a3d4b8; }
 
     /* Upload results table — scrollable, same style as batch */
     .upload-results-wrap { overflow-x: auto; max-height: 500px; overflow-y: auto; }
@@ -275,6 +286,13 @@
     }
     .results-stats { font-size: .84rem; color: var(--grey); }
     .results-stats strong { color: var(--queen-blue); }
+    .download-btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-sub { display: block; font-size: .7rem; font-weight: 400; opacity: .85; margin-top: 2px; }
+    .btn.btn-outline-teal {
+      background: var(--white); color: var(--teal);
+      border: 2px solid var(--teal);
+    }
+    .btn.btn-outline-teal:hover { background: var(--light-teal); }
 
     /* FOOTER */
     footer { text-align: center; padding: 20px; font-size: .75rem; color: var(--grey); border-top: 1px solid var(--light-grey); background: var(--white); margin-top: 20px; }
@@ -401,14 +419,31 @@
 
       <!-- Column mapping -->
       <div id="col-map-section" style="display:none;">
-        <p style="font-size:.85rem;color:var(--grey);margin:18px 0 4px;">Confirm which columns contain the EPA activity and involvement rating:</p>
-        <div class="col-map-grid">
+        <p style="font-size:.85rem;color:var(--grey);margin:18px 0 8px;">Map your file's columns to the fields needed for the lookup and export:</p>
+        <div class="col-map-grid five-col">
           <div class="col-map-item">
-            <label>EPA / Activity column</label>
+            <label>Trainee First Name</label>
+            <div class="col-hint">Used in export</div>
+            <select id="col-firstname"></select>
+          </div>
+          <div class="col-map-item">
+            <label>Trainee Last Name</label>
+            <div class="col-hint">Used in export</div>
+            <select id="col-lastname"></select>
+          </div>
+          <div class="col-map-item">
+            <label>PGY</label>
+            <div class="col-hint">Used in export</div>
+            <select id="col-pgy"></select>
+          </div>
+          <div class="col-map-item">
+            <label>EPA / Activity</label>
+            <div class="col-hint">Used for lookup</div>
             <select id="col-epa"></select>
           </div>
           <div class="col-map-item">
-            <label>Involvement Rating column</label>
+            <label>Involvement</label>
+            <div class="col-hint">Used for lookup</div>
             <select id="col-rating"></select>
           </div>
         </div>
@@ -420,9 +455,19 @@
     <div id="upload-results-card" style="display:none;" class="card">
       <div class="card-title">Enriched Results</div>
       <hr class="teal-rule" />
+      <p style="font-size:.82rem;color:var(--grey);margin-bottom:14px;">
+        Preview shows all suggested milestone ratings. Choose a download format below.
+      </p>
       <div class="results-toolbar">
         <div class="results-stats" id="upload-stats"></div>
-        <button class="btn btn-success" id="download-csv-btn">⬇ Download Enriched CSV</button>
+        <div class="download-btn-group">
+          <button class="btn btn-success" id="download-standard-btn">⬇ Standard CSV
+            <span class="btn-sub">firstname, lastname, PGY, milestone, rating</span>
+          </button>
+          <button class="btn btn-success btn-outline-teal" id="download-report-btn">⬇ Milestone Report CSV
+            <span class="btn-sub">full detail with program, activity &amp; dates</span>
+          </button>
+        </div>
       </div>
       <div class="upload-results-wrap">
         <table class="upload-table" id="upload-table"></table>
@@ -633,18 +678,47 @@ const fileNameLabel    = document.getElementById("file-name-label");
 const fileMetaLabel    = document.getElementById("file-meta-label");
 const clearFileBtn     = document.getElementById("clear-file-btn");
 const colMapSection    = document.getElementById("col-map-section");
-const colEpaSelect     = document.getElementById("col-epa");
-const colRatingSelect  = document.getElementById("col-rating");
-const runMappingBtn    = document.getElementById("run-mapping-btn");
-const uploadResultsCard= document.getElementById("upload-results-card");
-const uploadStats      = document.getElementById("upload-stats");
-const uploadTable      = document.getElementById("upload-table");
-const uploadLegend     = document.getElementById("upload-legend");
-const downloadCsvBtn   = document.getElementById("download-csv-btn");
+const colFirstnameSelect  = document.getElementById("col-firstname");
+const colLastnameSelect   = document.getElementById("col-lastname");
+const colPgySelect        = document.getElementById("col-pgy");
+const colEpaSelect        = document.getElementById("col-epa");
+const colRatingSelect     = document.getElementById("col-rating");
+const runMappingBtn       = document.getElementById("run-mapping-btn");
+const uploadResultsCard   = document.getElementById("upload-results-card");
+const uploadStats         = document.getElementById("upload-stats");
+const uploadTable         = document.getElementById("upload-table");
+const uploadLegend        = document.getElementById("upload-legend");
+const downloadStandardBtn = document.getElementById("download-standard-btn");
+const downloadReportBtn   = document.getElementById("download-report-btn");
 
-let parsedRows = [];   // array of objects (one per CSV row)
-let csvHeaders = [];   // original header names
-let enrichedRows = []; // rows after milestone columns added
+let parsedRows  = [];  // array of objects (one per CSV row)
+let csvHeaders  = [];  // original header names
+let enrichedRows = []; // rows after milestone lookup
+
+// Full milestone names for the Milestone Report export format
+const MILESTONE_NAMES = {
+  PC1:   "Patient Care 1: Emergency Stabilization",
+  PC2:   "Patient Care 2: Performance of a Focused History and Physical Exam",
+  PC3:   "Patient Care 3: Diagnostic Studies",
+  PC4:   "Patient Care 4: Diagnosis",
+  PC5:   "Patient Care 5: Pharmacotherapy",
+  PC6:   "Patient Care 6: Reassessment and Disposition",
+  PC7:   "Patient Care 7: Emergency Department Flow",
+  PC8:   "Patient Care 8: General Approach to Procedures",
+  MK1:   "Medical Knowledge 1: Scientific Knowledge",
+  MK2:   "Medical Knowledge 2: Treatment and Clinical Reasoning",
+  PBL1:  "Practice-Based Learning and Improvement 1: Evidence-Based and Informed Practice",
+  PBL2:  "Practice-Based Learning and Improvement 2: Reflective Practice and Commitment to Personal Growth",
+  ICS1:  "Interpersonal and Communication Skills 1: Patient and Family-Centered Communication",
+  ICS2:  "Interpersonal and Communication Skills 2: Interprofessional and Team Communication",
+  ICS3:  "Interpersonal and Communication Skills 3: Communication within Healthcare Systems",
+  SBP1:  "Systems-Based Practice 1: Patient Safety",
+  SBP3:  "Systems-Based Practice 3: Physician Role in Health Care Systems",
+  SBP4:  "Systems-Based Practice 4: Technology",
+  PROF1: "Professionalism 1: Professional Values and Ethics",
+  PROF2: "Professionalism 2: Accountability/Conscientiousness",
+  PROF3: "Professionalism 3: Self-Awareness and Help-Seeking",
+};
 
 // Drag-and-drop
 uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("drag-over"); });
@@ -694,15 +768,21 @@ function handleFile(file) {
     fileLoadedBar.style.display = "flex";
     uploadZone.style.display = "none";
 
-    // Populate column selectors — try to auto-detect
-    [colEpaSelect, colRatingSelect].forEach(sel => {
-      sel.innerHTML = csvHeaders.map(h => `<option value="${h}">${h}</option>`).join("");
+    const optionalBlank = `<option value="">— Not in file —</option>`;
+    const allOpts = csvHeaders.map(h => `<option value="${h}">${h}</option>`).join("");
+    const guess = (patterns, fallback) =>
+      csvHeaders.find(h => patterns.some(p => p.test(h))) || fallback;
+
+    [colFirstnameSelect, colLastnameSelect, colPgySelect].forEach(sel => {
+      sel.innerHTML = optionalBlank + allOpts;
     });
-    const epaGuess    = csvHeaders.find(h => /activity/i.test(h)) || csvHeaders[0];
-    const ratingGuess = csvHeaders.find(h => /involvement rating/i.test(h)) ||
-                        csvHeaders.find(h => /rating/i.test(h)) || csvHeaders[1];
-    colEpaSelect.value    = epaGuess;
-    colRatingSelect.value = ratingGuess;
+    [colEpaSelect, colRatingSelect].forEach(sel => { sel.innerHTML = allOpts; });
+
+    colFirstnameSelect.value = guess([/first.?name/i, /firstname/i, /^first$/i], "");
+    colLastnameSelect.value  = guess([/last.?name/i, /lastname/i, /^last$/i], "");
+    colPgySelect.value       = guess([/pgy/i, /post.?grad/i, /year/i], "");
+    colEpaSelect.value       = guess([/^activity$/i, /epa/i], csvHeaders[0]);
+    colRatingSelect.value    = guess([/^involvement$/i, /involvement.?rating/i, /rating/i], csvHeaders[1]);
 
     colMapSection.style.display = "block";
     uploadResultsCard.style.display = "none";
@@ -720,10 +800,19 @@ clearFileBtn.addEventListener("click", () => {
 });
 
 runMappingBtn.addEventListener("click", () => {
-  const epaCol    = colEpaSelect.value;
-  const ratingCol = colRatingSelect.value;
+  const firstnameCol = colFirstnameSelect.value;
+  const lastnameCol  = colLastnameSelect.value;
+  const pgyCol       = colPgySelect.value;
+  const epaCol       = colEpaSelect.value;
+  const ratingCol    = colRatingSelect.value;
 
-  // Find all unique milestones that appear across matched EPAs
+  // Auto-detect extra columns needed for the Milestone Report export
+  const guess = (patterns) => csvHeaders.find(h => patterns.some(p => p.test(h))) || "";
+  const programCol       = guess([/^program$/i]);
+  const activityDateCol  = guess([/^activity.?date$/i]);
+  const assessmentDateCol= guess([/^assessment.?date$/i]);
+
+  // Find all unique milestones across matched EPAs
   const msSet = new Set();
   parsedRows.forEach(row => {
     const epa = row[epaCol];
@@ -746,7 +835,7 @@ runMappingBtn.addEventListener("click", () => {
           msScores[ms] = rd[ms] ?? "";
           if (rd[ms]) usedScores.add(rd[ms]);
         } else {
-          msScores[ms] = null; // not applicable
+          msScores[ms] = null;
         }
       });
       matched++;
@@ -754,27 +843,31 @@ runMappingBtn.addEventListener("click", () => {
       colMilestones.forEach(ms => { msScores[ms] = null; });
       unmatched++;
     }
-    return { ...row, _msScores: msScores, _epa: epa, _rating: rating, _matched: !!epaMs };
+    return {
+      ...row,
+      _msScores:   msScores,
+      _epa:        epa,
+      _rating:     rating,
+      _matched:    !!epaMs,
+      _firstname:  firstnameCol ? (row[firstnameCol] ?? "") : "",
+      _lastname:   lastnameCol  ? (row[lastnameCol]  ?? "") : "",
+      _pgy:        pgyCol       ? (row[pgyCol]       ?? "") : "",
+      _program:    programCol   ? (row[programCol]   ?? "") : "",
+      _actDate:    activityDateCol   ? (row[activityDateCol]   ?? "") : "",
+      _assDate:    assessmentDateCol ? (row[assessmentDateCol] ?? "") : "",
+    };
   });
 
-  // Stats
   uploadStats.innerHTML = `<strong>${matched}</strong> rows matched · <strong>${unmatched}</strong> unmatched`;
 
-  // Build table — show all original columns + milestone columns
-  const visibleOrigCols = csvHeaders; // show all; user can decide what to keep in download
-  let html = "<thead>";
-
-  // Group header row
-  html += "<tr>";
-  visibleOrigCols.forEach(h => { html += `<th rowspan="2">${h}</th>`; });
+  const visibleOrigCols = csvHeaders;
+  let html = "<thead><tr>";
+  visibleOrigCols.forEach(h => { html += `<th rowspan="2">${escHtml(h)}</th>`; });
   MS_GROUPS.forEach(g => {
     const cols = g.members.filter(ms => colMilestones.includes(ms));
     if (cols.length) html += `<th class="ms-group-header" colspan="${cols.length}">${g.label}</th>`;
   });
-  html += "</tr>";
-
-  // Milestone name row
-  html += "<tr>";
+  html += "</tr><tr>";
   colMilestones.forEach(ms => { html += `<th class="ms-col">${ms}</th>`; });
   html += "</tr></thead><tbody>";
 
@@ -782,16 +875,14 @@ runMappingBtn.addEventListener("click", () => {
     html += "<tr>";
     visibleOrigCols.forEach(h => {
       const val = row[h] ?? "";
-      const isEpaCol    = h === epaCol;
-      const isRatingCol = h === ratingCol;
-      const noMatch     = isEpaCol && !row._matched;
+      const noMatch = h === epaCol && !row._matched;
       html += `<td${noMatch ? " class='no-match'" : ""}>${escHtml(val)}</td>`;
     });
     colMilestones.forEach(ms => {
       const s = row._msScores[ms];
-      if (s === null)     { html += `<td class="empty-ms">—</td>`; }
-      else if (s === "")  { html += `<td class="empty-ms">?</td>`; }
-      else                { html += `<td class="ms-score-cell" style="background:${scoreColor(s)}">${s}</td>`; }
+      if (s === null)    { html += `<td class="empty-ms">—</td>`; }
+      else if (s === "") { html += `<td class="empty-ms">?</td>`; }
+      else               { html += `<td class="ms-score-cell" style="background:${scoreColor(s)}">${s}</td>`; }
     });
     html += "</tr>";
   });
@@ -800,44 +891,72 @@ runMappingBtn.addEventListener("click", () => {
   buildLegend(uploadLegend, usedScores);
   uploadResultsCard.style.display = "block";
   uploadResultsCard.scrollIntoView({behavior:"smooth", block:"start"});
-
-  // Store for download
   uploadTable._colMilestones = colMilestones;
-  uploadTable._origCols      = visibleOrigCols;
 });
 
 function escHtml(s) {
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
-// Download enriched CSV
-downloadCsvBtn.addEventListener("click", () => {
-  const colMilestones = uploadTable._colMilestones || [];
-  const origCols      = uploadTable._origCols || csvHeaders;
-  const allCols       = [...origCols, ...colMilestones];
-
-  const escape = v => {
-    const s = String(v ?? "");
-    return (s.includes(",") || s.includes('"') || s.includes("\n")) ? `"${s.replace(/"/g,'""')}"` : s;
-  };
-
-  const lines = [allCols.map(escape).join(",")];
-  enrichedRows.forEach(row => {
-    const vals = [
-      ...origCols.map(h => escape(row[h] ?? "")),
-      ...colMilestones.map(ms => {
-        const s = row._msScores[ms];
-        return s === null ? escape("") : escape(s);
-      })
-    ];
-    lines.push(vals.join(","));
-  });
-
+function triggerDownload(lines, filename) {
   const blob = new Blob([lines.join("\n")], {type:"text/csv"});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement("a");
-  a.href = url; a.download = "epa_milestone_enriched.csv";
+  a.href = url; a.download = filename;
   a.click(); URL.revokeObjectURL(url);
+}
+const esc = v => {
+  const s = String(v ?? "");
+  return (s.includes(",") || s.includes('"') || s.includes("\n")) ? `"${s.replace(/"/g,'""')}"` : s;
+};
+
+// ── Download: Standard format (5 columns) ────────────────────────────────────
+downloadStandardBtn.addEventListener("click", () => {
+  const colMilestones = uploadTable._colMilestones || [];
+  const headers = ["firstname", "lastname", "PGY", "milestoneshortname", "milestonerating"];
+  const lines   = [headers.map(esc).join(",")];
+
+  enrichedRows.forEach(row => {
+    colMilestones.forEach(ms => {
+      const s = row._msScores[ms];
+      if (s === null || s === "") return;
+      lines.push([esc(row._firstname), esc(row._lastname), esc(row._pgy), esc(ms), esc(s)].join(","));
+    });
+  });
+
+  triggerDownload(lines, "simpl_milestone_ratings.csv");
+});
+
+// ── Download: Milestone Report format (full detail) ──────────────────────────
+downloadReportBtn.addEventListener("click", () => {
+  const colMilestones = uploadTable._colMilestones || [];
+  const headers = [
+    "firstname", "lastname", "programname",
+    "milestoneshortname", "milestonename", "milestonerating",
+    "activitytitle", "answer", "completiondate", "activityeventdate"
+  ];
+  const lines = [headers.map(esc).join(",")];
+
+  enrichedRows.forEach(row => {
+    colMilestones.forEach(ms => {
+      const s = row._msScores[ms];
+      if (s === null || s === "") return;
+      lines.push([
+        esc(row._firstname),
+        esc(row._lastname),
+        esc(row._program),   // programname
+        esc(ms),             // milestoneshortname
+        esc(MILESTONE_NAMES[ms] || ms), // milestonename
+        esc(s),              // milestonerating
+        esc(row._epa),       // activitytitle
+        esc(row._rating),    // answer (involvement)
+        esc(row._assDate),   // completiondate (Assessment Date)
+        esc(row._actDate),   // activityeventdate (Activity Date)
+      ].join(","));
+    });
+  });
+
+  triggerDownload(lines, "simpl_milestone_report.csv");
 });
 </script>
 </body>
